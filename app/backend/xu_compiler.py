@@ -372,7 +372,7 @@ def p_ComandoEntrada(p):
     elif xtype == 'REAL':
         p[0] = f'scanf("%lf", &{var});'
     elif xtype == 'TEXTO':
-        p[0] = f'scanf("%255s", {var});'
+        p[0]= f'fgets({var}, 256, stdin);'
         # lê string (sem espaços) - para ler linhas completas seria mais trabalho
     elif xtype == 'LOGICO':
         p[0] = f'scanf("%d", &{var});'
