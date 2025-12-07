@@ -1,0 +1,9 @@
+: DECLARACOES
+contador : INTEIRO
+: PROGRAMA
+contador <- 1
+ENQUANTO contador <= 5
+    ESCREVA contador
+    contador <- contador + 1
+    ESCREVA "maria"
+FIM

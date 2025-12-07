@@ -1,0 +1,11 @@
+: DECLARACOES
+idade : INTEIRO
+
+: PROGRAMA
+LEIA idade
+SE idade >= 18 ENTAO
+    ESCREVA "Maior de idade"
+    ESCREVA "Maior de idade"
+SENAO
+    ESCREVA "Menor de idade"
+FIM

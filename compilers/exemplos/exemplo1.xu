@@ -1,0 +1,8 @@
+: DECLARACOES
+nome : TEXTO
+idade : INTEIRO
+: PROGRAMA
+# teste de comentário
+LEIA nome
+LEIA idade
+ESCREVA "Oi"
