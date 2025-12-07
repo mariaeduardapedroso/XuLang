@@ -1,0 +1,11 @@
+: DECLARACOES
+x : INTEIRO
+y : REAL
+msg : TEXTO
+: PROGRAMA
+LEIA x
+SE x > 10 ENTAO
+    ESCREVA "Maior que 10"
+SENAO
+    ESCREVA "Menor ou igual a 10"
+FIM
