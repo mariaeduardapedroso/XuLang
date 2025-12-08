@@ -1,242 +1,401 @@
-Introdução
+Documento Técnico: XuLang - Proposta, Estrutura e Implementação
 
-xu_compiler.py é um compilador simples de XuLang → C, escrito em Python usando PLY (lex + yacc).
-Fluxo de uso documentado no topo do arquivo:
+1. Proposta da Linguagem XuLang
 
-python xu_compiler.py entrada.xu > saida.c
+XuLang é uma linguagem de programação didática e estruturada, projetada para ser um modelo simplificado de linguagens procedurais tradicionais. Seu principal objetivo é fornecer um ambiente claro e de fácil compreensão para o estudo de conceitos fundamentais de programação, como declaração de variáveis, comandos de entrada/saída, estruturas de controle e expressões.
 
-gcc saida.c -o programa
+1.1. O que XuLang faz?
 
-./programa
-O programa faz lexing, parsing, checagem semântica básica e gera código C (arquivo .c) imprimido no stdout. 
+XuLang é um compilador source-to-source que traduz o código-fonte escrito em XuLang (.xu) diretamente para um código-fonte equivalente na linguagem C.
 
-xu_compiler
+Fluxo de Execução:
 
-O que a XuLang se propõe
+O usuário escreve um programa em XuLang.
 
-XuLang é uma linguagem didática/mini-linguagem para ensinar compilação, com sintaxe parecida com linguagens de pseudo-código. Objetivos principais:
+O compilador (xu_compiler.py) processa o arquivo .xu.
 
-Permitir declaração de variáveis tipadas (INTEIRO, REAL, TEXTO, LOGICO).
+O compilador gera o código C equivalente (saida.c).
 
-Suportar leitura e escrita (LEIA, ESCREVA).
+O código C é compilado por um compilador C (como o GCC) em um executável nativo.
 
-Suportar atribuições (<-), expressões aritméticas, comparações, operadores booleanos (E, OU).
+Este processo demonstra a arquitetura de compilação, onde a XuLang atua como uma linguagem de alto nível intermediária que se beneficia da portabilidade e da eficiência do código C gerado.
 
-Estruturas de controle: SE ... ENTAO ... SENAO e ENQUANTO ... FIM e blocos INICIO ... FIM.
+2. Estrutura da Linguagem (Tokens e Léxico)
 
-Gerar código C equivalente (com main, printf, scanf, includes e declarações). 
+O Analisador Léxico (Lexer) é a primeira fase do compilador, responsável por transformar a sequência de caracteres do código-fonte em uma sequência de unidades significativas chamadas Tokens.
 
-xu_compiler
+2.1. Tokens e Palavras Reservadas
 
-Tokens (resumo)
+Tipo de Token
 
-Tokens definidos no lexer:
+Palavra-chave/Símbolo
 
-básicos: NAME, NUMINT, NUMREAL, CADEIA, OP_REL, ATRIB (<-), PC (:), COMMENT.
+Descrição
 
-palavras reservadas (keywords): DECLARACOES, PROGRAMA, INTEIRO, REAL, TEXTO, LOGICO, LEIA, ESCREVA, SE, SENAO, ENTAO, ENQUANTO, INICIO, FIM.
+Equivalente em C (se aplicável)
 
-booleanos (palavras-chave mapeadas): E -> E_BOOL, OU -> OU_BOOL.
+Palavras-chave
 
-literais para operadores aritméticos e parênteses: + - * / ( ) (tratados em literals).
+DECLARACOES
 
-Comentários iniciam com # até o fim da linha (COMMENT) — preservados e transformados em comentários C.
-Observações lexicais importantes:
+Marca o início da seção de declaração de variáveis.
 
-NAME aceita [A-Za-z_][A-Za-z0-9_]*. Palavras reservadas são reconhecidas independentemente de case (convertidas para UPPER para matching), mas nomes de variáveis mantêm case original.
+-
 
-CADEIA (strings) usa regex que admite escapes; a string é mantida com aspas (útil para printf).
+Palavras-chave
 
-NUMREAL reconhece dígitos com ponto (\d+\.\d+) e NUMINT apenas dígitos. 
+PROGRAMA
 
-xu_compiler
+Marca o início do bloco de comandos principal.
 
-Gramática (resumo das produções mais importantes)
+int main()
 
-Programa: PC DECLARACOES ListaDeclaracoes PC PROGRAMA ListaComandos
-(ou seja, o arquivo espera o bloco de declarações entre : e em seguida o bloco PROGRAMA com comandos).
+Tipos
 
-Declarações: NAME : TipoVar onde TipoVar ∈ {INTEIRO, REAL, TEXTO, LOGICO}.
+INTEIRO
 
-Comandos possíveis: atribuição (NAME <- ExpressaoAritmetica), entrada (LEIA NAME), saída (ESCREVA (NAME | CADEIA)), condicional (SE ExpressaoRelacional ENTAO ListaComandos [SENAO Comando] FIM), repetição (ENQUANTO ExpressaoRelacional ListaComandos FIM), bloco (INICIO ListaComandos FIM), comentário (COMMENT).
+Tipo de dados para números inteiros.
 
-Expressões aritméticas: suportam + - * /, literais inteiros/reais, variáveis e parênteses; precedência definida (* / > + -).
+int
 
-Expressões relacionais: ExpressaoAritmetica OP_REL ExpressaoAritmetica com OP_REL ∈ <= >= == != < >.
+Tipos
 
-Operadores booleanos: E (AND) e OU (OR) combinam termos relacionais em sentenças relacionais.
-(Existem produções auxiliares para listas recursivas de declarações/comandos e para construir strings com código C). 
+REAL
 
-xu_compiler
+Tipo de dados para números de ponto flutuante.
 
-O que o código faz (passo a passo técnico)
+double
 
-Lexer (PLY):
+Tipos
 
-Define tokens e regex para cada token; conta linhas com t_NEWLINE (atualiza lexer.lineno).
+TEXTO
 
-Erros léxicos são reportados para stderr com linha/caractere e t.lexer.skip(1).
+Tipo de dados para cadeias de caracteres.
 
-Estruturas internas:
+char name[256]
 
-symbols (tabela de símbolos): mapeia nome → {type: INTEIRO|REAL|TEXTO|LOGICO}.
+Tipos
 
-c_decls: lista de declarações C geradas (ex.: int x;, double y;, char nome[256];).
+LOGICO
 
-semantic_errors: lista de strings de erros semânticos acumulados.
+Tipo de dados booleano.
 
-Parser (PLY / YACC):
+int (0 ou 1)
 
-Produções descritas para declarações, comandos, expressões e blocos.
+Comandos
 
-Ao reconhecer uma declaração, registra variável em symbols e adiciona declaração correspondente para C (c_decl_for).
+LEIA
 
-Atribuições: checa se variável foi declarada; obtém (expr_code, expr_type) da expressão e chama check_assignment para validar compatibilidade. Gera var = expr; para a maioria dos tipos; para TEXTO usa strcpy(dest, src).
+Comando para leitura de entrada (input).
 
-Entrada/saída: LEIA var → gera scanf com formato adequado (%d, %lf, %255s); ESCREVA → gera printf com formato adequado e \n.
+scanf / fgets
 
-Condicionais: gera if (expr) { ... } e, se houver, else { ... }.
+Comandos
 
-Repetição: ENQUANTO → gera while (expr) { ... }.
+ESCREVA
 
-Comentários: # comentário vira // comentário em C.
+Comando para escrita de saída (output).
 
-Geração final de C:
+printf
 
-Na produção Programa o parser monta a saída C completa: includes (stdio.h, stdlib.h, string.h), int main() { declarações (c_decls) e corpo (comandos transformados), return 0; }.
+Estruturas
 
-O código C resultante é impresso no stdout (por isso o redirecionamento > saida.c no uso).
+SE, ENTAO, SENAO
 
-Checagem semântica e saída:
+Estrutura condicional (if-else).
 
-Durante parsing, erros semânticos são adicionados a semantic_errors.
+if, else
 
-Ao final do main() do compilador, se semantic_errors não for vazio, imprime-os em stderr e encerra com sys.exit(1) (falha de compilação). 
+Estruturas
 
-xu_compiler
+ENQUANTO
 
-Regras de tipos / conversões implementadas
+Estrutura de repetição (while).
 
-Mapeamento XuLang → C:
+while
 
-INTEIRO → int
+Blocos
 
-REAL → double
+INICIO, FIM
 
-TEXTO → char nome[256]; (vetor fixo de 256)
+Delimitadores de bloco de comandos.
 
-LOGICO → int (0/1)
+{ e }
 
-Regras de atribuição (função check_assignment):
+Lógicos
 
-Igual tipo → permitido.
+E, OU
 
-REAL ← INTEIRO → permitido (promoção).
+Operadores lógicos.
 
-INTEIRO ← REAL → erro semântico (proibido; mensagem sobre perda de precisão).
+&&, ||
 
-TEXTO só aceita TEXTO (cadeia literal ou variável texto).
+Operadores
 
-LOGICO aceita LOGICO e INTEIRO (tratado como inteiro).
+<-
 
-Em C, algumas promoções são naturais (por ex. int → double), mas o compilador aplica regras para sinalizar problemas. 
+Operador de atribuição.
 
-xu_compiler
+=
 
-O que a linguagem pode fazer (funcionalidades suportadas)
+Operadores
 
-Declarar variáveis com tipos básicos.
+==, !=, <, >, <=, >=
 
-Atribuições com expressões aritméticas.
+Operadores relacionais.
 
-Expressões numéricas com precedência e parênteses.
+==, !=, <, >, <=, >=
 
-Comparações relacionais e combinação com E/OU.
+Delimitadores
 
-Condicionais SE ... ENTAO ... [SENAO ...].
+:
 
-Laço ENQUANTO com corpo de comandos.
+Ponto e vírgula/separador.
 
-Blocos INICIO ... FIM (subalgoritmos) que geram { ... } em C.
+;
 
-Entrada (LEIA) e saída (ESCREVA) mapeadas para scanf/printf.
+Comentário
 
-Comentários com # convertidos para //.
+#...
 
-Geração automática de um programa C compilável (com main). 
+Comentário de linha.
 
-xu_compiler
+//...
 
-O que a linguagem / compilador não permite (limitações)
+2.2. Definições Léxicas (Expressões Regulares)
 
-Sem funções/procedimentos com parâmetros: não há declaração de funções nem chamadas; apenas um main gerado.
+O Lexer utiliza expressões regulares para identificar os tokens:
 
-Escopo limitado / sem blocos de escopo de variável: tabela de símbolos é global; não há escopo local para blocos.
+Token
 
-Strings com espaços: scanf("%255s", var) não lê espaços—apenas token até espaço. Ler linhas completas não está implementado.
+Regex
 
-Arrays/dinamismo: exceção do char[256] para TEXTO; não há suporte a arrays numéricos, structs, ponteiros, etc.
+Notas sobre a Geração de Código
 
-Conversões implícitas inseguras proibidas: REAL → INTEIRO é tratado como erro semântico (o compilador exige cuidado).
+NUMINT
 
-Tipos avançados e casting: nenhum operador cast explícito implementado.
+\d+
 
-Operadores e funções padrão limitados: não há funções matemáticas (sin, cos, etc.) nem entrada/saída avançada.
+Traduzido diretamente como literal em C.
 
-Tratamento de erros sintáticos simples: erro sintático imprime uma mensagem e não há tentativa sofisticada de recuperação.
+NUMREAL
 
-Não suporta includes/user libraries, múltiplos arquivos, otimizações.
+\d+\.\d+
 
-Sem tratamento de overflow/underflow: tipos são mapeados diretamente para C sem verificações extras. 
+Traduzido diretamente como literal em C.
 
-xu_compiler
+CADEIA
 
-Mensagens de erro e diagnóstico
+`"([^\\n]
 
-Erro léxico: imprime Erro léxico: caractere ilegal 'x' na linha N em stderr.
+(\.))*?"`
 
-Erro sintático: Erro sintático: token inesperado '...' na linha N ou fim de arquivo inesperado.
+ATRIB
 
-Erros semânticos: coletados em semantic_errors e impressos ao final (cada um com linha e descrição). Se houver erros semânticos, o compilador termina com código de saída 1. 
+\<\-
 
-xu_compiler
+Convertido para o operador de atribuição C, =.
 
-Detalhes práticos (para o compilador / mantenedor)
+NAME
 
-Arquitetura: Lexer → Parser (constrói código intermediário em strings) → geração de C final.
+[A-Za-z_][A-Za-z0-9_]*
 
-Representação de expressões: expressões aritméticas/relacionais retornam tuplas (c_code, tipo) para permitir checagens de tipo e geração direta de código C.
+Identificadores de variáveis. O Lexer verifica se são palavras reservadas (case-insensitive para XuLang) ou nomes de variáveis.
 
-Geração de nomes temporários: existe new_temp() mas não é amplamente usado; o sistema atual gera expressão inline (strings).
+3. Gramática da Linguagem (Sintaxe)
 
-Formato de saída: a saída é texto C prontamente compilável (depende de #include <string.h> para strcpy).
+O Analisador Sintático (Parser) utiliza a gramática Livre de Contexto abaixo, definida no formato BNF (Backus-Naur Form), para determinar se a sequência de tokens é válida.
 
-Como executar: python xu_compiler.py programa.xu > programa.c → compilar gcc programa.c -o prog.
+3.1. Estrutura do Programa
 
-Local de melhorias óbvias: escopo de variáveis, funções/procedimentos, melhor tratamento de strings (linhas com espaços), suporte a cast explícito, mensagens de erro com coluna além da linha, melhor inferência de tipos, geração de AST em vez de strings para facilitar otimizações. 
+O programa é dividido em uma seção de declarações e uma seção de comandos.
 
-xu_compiler
+<Programa> ::= ":" DECLARACOES <ListaDeclaracoes> ":" PROGRAMA <ListaComandos>
+<ListaDeclaracoes> ::= <Declaracao> <OutrasDeclaracoes>
+<OutrasDeclaracoes> ::= <ListaDeclaracoes> | ε
+<Declaracao> ::= NAME ":" <TipoVar>
+<TipoVar> ::= INTEIRO | REAL | TEXTO | LOGICO
 
-Exemplo mínimo de XuLang (exemplo hipotético)
 
-Formato esperado (exemplo rápido — não está no arquivo, mas compatível com a gramática):
+3.2. Comandos
 
-: DECLARACOES
-x : INTEIRO
-msg : TEXTO
-: PROGRAMA
-LEIA x
-ESCREVA "Valor lido:"
-ESCREVA x
-msg <- "OK"
-ESCREVA msg
-FIM
+A gramática suporta comandos básicos de E/S, atribuição e estruturas de controle.
 
+<ListaComandos> ::= <Comando> <ListaComandos> | ε
+<Comando> ::= <ComandoAtribuicao>
+           | <ComandoEntrada>
+           | <ComandoSaida>
+           | <ComandoCondicao>
+           | <ComandoRepeticao>
+           | <SubAlgoritmo>
+           | COMMENT
 
-Geraria um .c com declarações int x; char msg[256];, scanf/printf e strcpy para TEXTO. 
+<ComandoAtribuicao> ::= NAME ATRIB <ExpressaoAritmetica>
+<ComandoEntrada> ::= LEIA NAME
+<ComandoSaida> ::= ESCREVA <TipoSaida>
+<TipoSaida> ::= NAME | CADEIA
 
-xu_compiler
+<ComandoCondicao> ::= SE <ExpressaoRelacional> ENTAO <ListaComandos> <ContraCondicao> FIM
+<ContraCondicao> ::= SENAO <ListaComandos> FIM | ε
+<ComandoRepeticao> ::= ENQUANTO <ExpressaoRelacional> <ListaComandos> FIM
 
-Resumo final — O que o arquivo faz (em uma frase)
+<SubAlgoritmo> ::= INICIO <ListaComandos> FIM
 
-xu_compiler.py implementa um compilador educacional que transforma programas escritos em XuLang em código C, fazendo análise léxica e sintática com PLY, checagem semântica básica (tipos e declarações) e geração direta de código C imprimível, reportando erros léxicos/sintáticos/semânticos durante o processo.
+
+3.3. Expressões
+
+As expressões são divididas em aritméticas e relacionais, seguindo a ordem de precedência: *// > +/- > OP_REL > E > OU.
+
+<ExpressaoAritmetica> ::= <TermoAritmetico> <SentencaAritmetica>
+<SentencaAritmetica> ::= '+' <TermoAritmetico> <SentencaAritmetica>
+                      | '-' <TermoAritmetico> <SentencaAritmetica> | ε
+<TermoAritmetico> ::= <FatorAritmetico> <ProposicaoAritmetica>
+<ProposicaoAritmetica> ::= '*' <FatorAritmetico> <ProposicaoAritmetica>
+                        | '/' <FatorAritmetico> <ProposicaoAritmetica> | ε
+<FatorAritmetico> ::= NUMINT | NUMREAL | NAME | '(' <ExpressaoAritmetica> ')'
+
+<ExpressaoRelacional> ::= <TermoRelacional> <SentencaRelacional>
+<TermoRelacional> ::= <ExpressaoAritmetica> OP_REL <ExpressaoAritmetica>
+                   | '(' <ExpressaoRelacional> ')'
+<SentencaRelacional> ::= E_BOOL <TermoRelacional> <SentencaRelacional>
+                      | OU_BOOL <TermoRelacional> <SentencaRelacional> | ε
+
+
+4. Implementação do Compilador
+
+A implementação do compilador XuLang é realizada em Python, utilizando a biblioteca PLY (Python Lex-Yacc), que facilita a construção dos analisadores léxico e sintático.
+
+4.1. Análise Léxica (Lexer)
+
+O Lexer em xu_compiler.py é construído com as seguintes regras de implementação:
+
+Identificação de Palavras-chave: É utilizada uma hash map (reserved) para mapear as palavras-chave (em caixa alta) aos seus respectivos tipos de token. O Lexer verifica se um identificador (NAME) corresponde a alguma palavra-chave antes de classificá-lo como um nome de variável.
+
+Controle de Linha: A função t_NEWLINE é crucial para manter a variável t.lexer.lineno atualizada, permitindo relatar a posição exata de erros léxicos e sintáticos.
+
+Tratamento de Erros: A função t_error garante que caracteres inválidos sejam identificados, reportados ao usuário e ignorados para que a análise possa prosseguir (recuperação de erros simples).
+
+4.2. Tabela de Símbolos e Análise Semântica
+
+A fase de Análise Semântica ocorre concomitantemente à análise sintática (Parser).
+
+Tabela de Símbolos (symbols): É um dicionário global que armazena o nome e o tipo (INTEIRO, REAL, etc.) de cada variável declarada.
+
+# Exemplo de entrada na Tabela de Símbolos
+symbols = {
+    'idade': {'type': 'INTEIRO'},
+    'salario': {'type': 'REAL'}
+}
+
+
+Checagem de Declaração: Em qualquer regra que usa um NAME (atribuição, E/S), verifica-se se a variável existe em symbols. Caso não exista, um Erro Semântico de "variável não declarada" é registrado.
+
+Checagem de Tipos (check_assignment): Esta função verifica a compatibilidade na atribuição (<-).
+
+Permite a promoção implícita de tipos (ex: INTEIRO para REAL).
+
+Gera um Erro Semântico para atribuições que podem causar perda de precisão (ex: REAL para INTEIRO).
+
+O resultado dos erros semânticos é acumulado na lista semantic_errors e reportado ao final da compilação.
+
+4.3. Geração de Código C
+
+O Parser não apenas verifica a sintaxe, mas também constrói o código C de saída (o código gerado).
+
+4.3.1. Declarações
+
+Tipo XuLang
+
+Declaração C Gerada
+
+Notas
+
+INTEIRO
+
+int varname;
+
+Padrão C.
+
+REAL
+
+double varname;
+
+Uso de double para maior precisão.
+
+TEXTO
+
+char varname[256];
+
+Array de tamanho fixo para strings.
+
+LOGICO
+
+int varname;
+
+Representação booleana (0 ou 1) em C.
+
+4.3.2. Mapeamento de Comandos
+
+Comando XuLang
+
+Código C Gerado
+
+Observações
+
+var <- expr
+
+var = expr;
+
+Para numéricos e lógicos.
+
+texto <- string
+
+strcpy(texto, string);
+
+Uso de strcpy (requer string.h) para manipular strings.
+
+LEIA var
+
+scanf(...)
+
+Formatos %d, %lf e tratamento de fgets para TEXTO.
+
+ESCREVA val
+
+printf(...)
+
+Uso de printf com quebra de linha (\n).
+
+SE cond ENTAO ... SENAO ... FIM
+
+if (cond) { ... } else { ... }
+
+Estruturas de controle traduzidas diretamente.
+
+E, OU
+
+&&, ||
+
+Operadores lógicos traduzidos para o formato C.
+
+INICIO ... FIM
+
+{ ... }
+
+Usado para delimitar blocos de código em C, garantindo o escopo.
+
+4.3.3. Composição Final
+
+A regra de topo (p_Programa) é responsável por orquestrar a saída final:
+
+Inclui os cabeçalhos C (stdio.h, stdlib.h, string.h).
+
+Define a função int main() {.
+
+Insere todas as declarações de variáveis (armazenadas em c_decls).
+
+Insere a lista de comandos traduzidos, com indentação correta.
+
+Finaliza com return 0; }.
+
+Este design garante que o código C gerado seja formatado de forma limpa e seja imediatamente compilável por qualquer compilador C padrão.

@@ -1,0 +1,51 @@
+Gramática da Linguagem XuLang (BNF - Sintaxe)
+
+O Analisador Sintático (Parser) utiliza estas regras de Gramática Livre de Contexto para validar a estrutura do código.
+
+3.1. Estrutura do Programa
+
+<Programa> ::= ":" DECLARACOES <ListaDeclaracoes> ":" PROGRAMA <ListaComandos>
+<ListaDeclaracoes> ::= <Declaracao> <OutrasDeclaracoes>
+<OutrasDeclaracoes> ::= <ListaDeclaracoes> | ε
+<Declaracao> ::= NAME ":" <TipoVar>
+<TipoVar> ::= INTEIRO | REAL | TEXTO | LOGICO
+
+3.2. Comandos
+
+<ListaComandos> ::= <Comando> <ListaComandos> | ε
+<Comando> ::= <ComandoAtribuicao>
+| <ComandoEntrada>
+| <ComandoSaida>
+| <ComandoCondicao>
+| <ComandoRepeticao>
+| <SubAlgoritmo>
+| COMMENT
+
+<ComandoAtribuicao> ::= NAME ATRIB <ExpressaoAritmetica>
+<ComandoEntrada> ::= LEIA NAME
+<ComandoSaida> ::= ESCREVA <TipoSaida>
+<TipoSaida> ::= NAME | CADEIA
+
+<ComandoCondicao> ::= SE <ExpressaoRelacional> ENTAO <ListaComandos> <ContraCondicao> FIM
+<ContraCondicao> ::= SENAO <ListaComandos> FIM | ε
+<ComandoRepeticao> ::= ENQUANTO <ExpressaoRelacional> <ListaComandos> FIM
+
+<SubAlgoritmo> ::= INICIO <ListaComandos> FIM
+
+3.3. Expressões (Aritméticas e Relacionais)
+
+As regras refletem a precedência matemática: */ / > + / - > OP_REL > E > OU.
+
+<ExpressaoAritmetica> ::= <TermoAritmetico> <SentencaAritmetica>
+<SentencaAritmetica> ::= '+' <TermoAritmetico> <SentencaAritmetica>
+| '-' <TermoAritmetico> <SentencaAritmetica> | ε
+<TermoAritmetico> ::= <FatorAritmetico> <ProposicaoAritmetica>
+<ProposicaoAritmetica> ::= '*' <FatorAritmetico> <ProposicaoAritmetica> | ε
+| '/' <FatorAritmetico> <ProposicaoAritmetica> | ε
+<FatorAritmetico> ::= NUMINT | NUMREAL | NAME | '(' <ExpressaoAritmetica> ')'
+
+<ExpressaoRelacional> ::= <TermoRelacional> <SentencaRelacional>
+<TermoRelacional> ::= <ExpressaoAritmetica> OP_REL <ExpressaoAritmetica>
+| '(' <ExpressaoRelacional> ')'
+<SentencaRelacional> ::= E_BOOL <TermoRelacional> <SentencaRelacional> | ε
+| OU_BOOL <TermoRelacional> <SentencaRelacional> | ε

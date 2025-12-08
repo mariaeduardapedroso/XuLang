@@ -147,47 +147,47 @@ export default function App() {
     }
   }
 
-// substitua a função InputsPanel atual por esta versão
-function InputsPanel() {
-  // refs para inputs não controlados
-  const inputEls = useRef([]);
+  // substitua a função InputsPanel atual por esta versão
+  function InputsPanel() {
+    // refs para inputs não controlados
+    const inputEls = useRef([]);
 
-  if (!inputsState || inputsState.length === 0) {
-    return <div style={{ color: '#6b7280', fontSize: 13 }}>Sem LEIA detectado no código — nenhum input necessário.</div>;
-  }
+    if (!inputsState || inputsState.length === 0) {
+      return <div style={{ color: '#6b7280', fontSize: 13 }}>Sem LEIA detectado no código — nenhum input necessário.</div>;
+    }
 
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-      <div style={{ fontWeight: 600 }}>Entradas aguardadas (LEIA)</div>
-      {inputsState.map((it, idx) => (
-        <div key={idx} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-          <div style={{ minWidth: 120, fontFamily: 'monospace', fontSize: 13 }}>{it.name || `input${idx+1}`}</div>
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div style={{ fontWeight: 600 }}>Entradas aguardadas (LEIA)</div>
+        {inputsState.map((it, idx) => (
+          <div key={idx} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <div style={{ minWidth: 120, fontFamily: 'monospace', fontSize: 13 }}>{it.name || `input${idx + 1}`}</div>
 
-          <input
-            // usamos defaultValue para tornar o input não-controlado (evita perder cursor durante re-renders)
-            defaultValue={it.value}
-            ref={el => inputEls.current[idx] = el}
-            placeholder="valor..."
-            style={{ flex: 1, padding: '8px 10px', borderRadius: 6, border: '1px solid #e5e7eb', fontFamily: 'monospace' }}
-            onBlur={(e) => {
-              // quando o usuário sair do campo, salvamos o valor no estado controlado
-              setInputValueAt(idx, e.target.value);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                // salvar imediatamente e focar próximo input (se existir)
+            <input
+              // usamos defaultValue para tornar o input não-controlado (evita perder cursor durante re-renders)
+              defaultValue={it.value}
+              ref={el => inputEls.current[idx] = el}
+              placeholder="valor..."
+              style={{ flex: 1, padding: '8px 10px', borderRadius: 6, border: '1px solid #e5e7eb', fontFamily: 'monospace' }}
+              onBlur={(e) => {
+                // quando o usuário sair do campo, salvamos o valor no estado controlado
                 setInputValueAt(idx, e.target.value);
-                const next = inputEls.current[idx + 1];
-                if (next) next.focus();
-                e.preventDefault();
-              }
-            }}
-          />
-        </div>
-      ))}
-    </div>
-  );
-}
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  // salvar imediatamente e focar próximo input (se existir)
+                  setInputValueAt(idx, e.target.value);
+                  const next = inputEls.current[idx + 1];
+                  if (next) next.focus();
+                  e.preventDefault();
+                }
+              }}
+            />
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div style={{ display: 'flex', height: '100vh', fontFamily: 'Inter, system-ui, sans-serif' }}>
@@ -269,10 +269,29 @@ function InputsPanel() {
 
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
             <div style={{ fontWeight: 600 }}>Ações</div>
+
             <div style={{ color: '#6b7280' }}>
-              Dica: preencha as caixas de "Entradas" e clique em <strong>Compilar e Executar</strong>. O frontend monta `inputs` na ordem de aparição de LEIA e o backend envia esses valores como stdin para o programa.
+              Dica: preencha as caixas de "Entradas" e clique em <strong>Compilar e Executar</strong>.
+              O frontend monta `inputs` na ordem de aparição de LEIA e o backend envia esses valores
+              como stdin para o programa.
+            </div>
+
+            {/* ESTE É O LINK NOVO */}
+            <div style={{ marginTop: 12 }}>
+              <a
+                href="/xulang"
+                style={{
+                  color: '#2563eb',
+                  textDecoration: 'underline',
+                  cursor: 'pointer',
+                  fontWeight: 500
+                }}
+              >
+                Ir para página da XuLang →
+              </a>
             </div>
           </div>
+
         </footer>
       </main>
     </div>

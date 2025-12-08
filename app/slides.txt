@@ -1,0 +1,139 @@
+Tópicos Sugeridos para a Apresentação da Linguagem XuLang
+
+O objetivo desta estrutura é guiar o público desde o propósito da linguagem até as suas regras técnicas, usando a simplicidade como fio condutor.
+
+Slide 1: Título e Propósito
+
+Título: XuLang: Programação e Lógica Descomplicada em Português
+
+Subtítulo: A linguagem de programação criada para ensinar
+
+Ponto-chave: Apresentar a XuLang como uma ferramenta didática.
+
+Slide 2: Por que XuLang? (O Problema e a Solução)
+
+Problema: Barreiras linguísticas (inglês) e complexidade de sintaxe em linguagens iniciantes.
+
+Solução XuLang: Criar um ambiente de programação 100% em Português, com sintaxe mínima e intuitiva.
+
+Ponto-chave: Ensinar lógica de programação primeiro, sem a distração de detalhes técnicos complexos.
+
+Público-alvo: Estudantes, iniciantes e qualquer falante de Português.
+
+Slide 3: Arquitetura Simples (Como Funciona)
+
+XuLang é um Compilador Source-to-Source.
+
+Fluxo: Código XuLang (.xu) -> Compilador -> Código C (.c) -> Executável.
+
+Benefício: Usa a eficiência do C, mas o usuário só precisa se preocupar com a sintaxe em Português.
+
+Slide 4: O Léxico da XuLang (Palavras-Chave e Tokens)
+
+Regras: A XuLang é case-insensitive (mas usamos maiúsculas para clareza).
+
+Palavras-Chave Fáceis de Lembrar:
+
+Estrutura: DECLARACOES, PROGRAMA, INICIO, FIM.
+
+Controle: SE, ENTAO, SENAO, ENQUANTO.
+
+E/S: LEIA, ESCREVA.
+
+Operadores e Símbolos:
+
+Atribuição: <- (Claro e distinto do operador de comparação =).
+
+Lógicos: E, OU.
+
+Delimitador: : (usado após declarações).
+
+Slide 5: Tipos de Dados
+
+Objetivo: Oferecer apenas os tipos essenciais para iniciar.
+
+Tipos e Equivalentes:
+
+INTEIRO (Números inteiros)
+
+REAL (Números com ponto flutuante)
+
+TEXTO (Cadeias de caracteres/Strings)
+
+LOGICO (Verdadeiro ou Falso)
+
+Regras de Nomenclatura (O que pode ser um nome): Deve começar com letra ou _, seguido por letras, números ou _.
+
+Slide 6: A Gramática da XuLang - Estrutura Principal
+
+Regra de Ouro: Todo programa XuLang segue a estrutura fixa:
+
+: DECLARACOES <ListaDeclaracoes> 
+: PROGRAMA <ListaComandos>
+
+
+Declarações: NAME : <TipoVar>
+
+Blocos de Comando: INICIO <ListaComandos> FIM (Usados para agrupar comandos ou estruturas de controle).
+
+Slide 7: Gramática - Comandos Essenciais
+
+Atribuição: NAME <- <ExpressaoAritmetica>
+
+Entrada/Saída (I/O):
+
+LEIA NAME (Lê um valor e armazena em NAME).
+
+ESCREVA <TipoSaida> (Exibe um valor, que pode ser uma variável ou uma CADEIA de texto).
+
+Slide 8: Gramática - Estruturas de Controle
+
+Condicional (If/Else):
+
+SE <ExpressaoRelacional> ENTAO 
+    <ListaComandos> 
+<ContraCondicao> FIM 
+
+
+Repetição (While):
+
+ENQUANTO <ExpressaoRelacional> 
+    <ListaComandos> 
+FIM
+
+
+A simplicidade do FIM: Todas as estruturas de controle terminam com a mesma palavra-chave, evitando confusão.
+
+Slide 9: Regras de Expressões
+
+Expressões Aritméticas: Seguem a precedência matemática tradicional (*, / antes de +, -).
+
+Expressões Relacionais: Comparação usando ==, !=, >, <, etc.
+
+Expressões Lógicas: Uso de E e OU para combinar condições.
+
+Prioridade: O uso de parênteses () é permitido e recomendado para alterar a ordem de avaliação.
+
+Slide 10: O que Não Pode (Regras de Ouro)
+
+Não Pode: Variáveis não declaradas.
+
+Não Pode: Atribuição de tipos incompatíveis (ex: texto em variável numérica).
+
+Não Pode: Misturar código de declaração e de programa.
+
+Obrigatoriedade: Todo programa deve ter as seções DECLARACOES e PROGRAMA.
+
+Slide 11: Exemplo de Código XuLang Completo
+
+Apresentar um exemplo curto e funcional que use declaração, LEIA, ESCREVA e um SE/SENAO.
+
+Mostrar o equivalente em C ao lado para demonstrar a tradução.
+
+Slide 12: Conclusão
+
+Recapitulação: XuLang facilita a curva de aprendizado.
+
+Convite: A próxima etapa é usar o compilador para transformar sua lógica em código funcional.
+
+CTA (Call to Action): "Comece a programar em Português hoje!"
