@@ -23,6 +23,8 @@ Funcionalidades:
 import sys
 import ply.lex as lex
 import ply.yacc as yacc
+import os # NOVO: Para operações de arquivo
+from pathlib import Path # NOVO: Para manipulação de caminhos e nomes de arquivo
 
 # ------------------------------
 # LEXER (Analisador Léxico)
@@ -277,6 +279,8 @@ def p_Programa(p):
     c_out.append('}')
     # imprimir código resultante (para redirecionamento > arquivo.c)
     print('\n'.join(c_out))
+    # Armazena o código C gerado no objeto parser (p.parser) para uso posterior na main
+    p.parser.c_output_code = '\n'.join(c_out)
 
 # ListaDeclaracoes -> Declaracao OutrasDeclaracoes
 def p_ListaDeclaracoes(p):
@@ -661,22 +665,50 @@ def main():
     if len(sys.argv) < 2:
         print("Uso: python xu_compiler.py <arquivo.xu>")
         return
+    
     fname = sys.argv[1]
+    
+    # 1. Definir o nome e o caminho do arquivo de saída
+    input_path = Path(fname)
+    # Garante que o diretório 'resultado' exista
+    output_dir = Path('resultado')
+    output_dir.mkdir(exist_ok=True) # Cria a pasta se não existir
+    
+    # Muda a extensão de .xu para .c
+    output_fname = input_path.with_suffix('.c').name
+    # Cria o caminho completo para o arquivo de saída
+    output_path = output_dir / output_fname
+
     # Lê todo o conteúdo do arquivo de entrada XuLang
     data = open(fname, 'r', encoding='utf-8').read()
     # Forçar newline final para facilitar comentários e regras baseadas em linhas
     if not data.endswith('\n'):
         data += '\n'
+        
     # Constrói o parser
     parser = yacc.yacc()
+    # Inicializa a variável para armazenar o código C gerado
+    parser.c_output_code = None
+    
     # Inicia o processo de parsing (análise léxica e sintática)
     parser.parse(data, lexer=lexer)
+    
     # Ao final, reportar erros semânticos (se houver)
     if semantic_errors:
         sys.stderr.write("Erros semânticos detectados:\n")
         for e in semantic_errors:
             sys.stderr.write(e + "\n")
         sys.exit(1) # Sai com código de erro se houver problemas semânticos
-
+    
+    # 4. Salvar o código C gerado se o parse foi bem-sucedido
+    if parser.c_output_code:
+        try:
+            with open(output_path, 'w', encoding='utf-8') as f:
+                f.write(parser.c_output_code)
+            sys.stdout.write(f"Sucesso! Código C gerado e salvo em: {output_path}\n")
+        except IOError as e:
+            sys.stderr.write(f"Erro ao escrever o arquivo de saída: {e}\n")
+            sys.exit(1)
+            
 if __name__ == '__main__':
     main()

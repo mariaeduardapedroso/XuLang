@@ -1,0 +1,9 @@
+: DECLARACOES
+idade : INTEIRO
+: PROGRAMA
+LEIA idade
+SE idade >= 18 ENTAO
+#esse é um comentário
+    ESCREVA "Maior de idade"
+    ESCREVA "Maior de idade"
+FIM

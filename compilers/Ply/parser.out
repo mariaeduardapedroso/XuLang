@@ -1,0 +1,1651 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> Programa
+Rule 1     Programa -> PC DECLARACOES ListaDeclaracoes PC PROGRAMA ListaComandos
+Rule 2     ListaDeclaracoes -> Declaracao OutrasDeclaracoes
+Rule 3     OutrasDeclaracoes -> ListaDeclaracoes
+Rule 4     OutrasDeclaracoes -> <empty>
+Rule 5     Declaracao -> NAME PC TipoVar
+Rule 6     TipoVar -> INTEIRO
+Rule 7     TipoVar -> REAL
+Rule 8     TipoVar -> TEXTO
+Rule 9     TipoVar -> LOGICO
+Rule 10    ListaComandos -> Comando ListaComandos
+Rule 11    ListaComandos -> <empty>
+Rule 12    Comando -> ComandoAtribuicao
+Rule 13    Comando -> ComandoEntrada
+Rule 14    Comando -> ComandoSaida
+Rule 15    Comando -> ComandoCondicao
+Rule 16    Comando -> ComandoRepeticao
+Rule 17    Comando -> SubAlgoritmo
+Rule 18    Comando -> ComandoComentario
+Rule 19    ComandoComentario -> COMMENT
+Rule 20    ComandoAtribuicao -> NAME ATRIB ExpressaoAritmetica
+Rule 21    ComandoEntrada -> LEIA NAME
+Rule 22    TipoSaida -> NAME
+Rule 23    TipoSaida -> CADEIA
+Rule 24    ComandoSaida -> ESCREVA TipoSaida
+Rule 25    ComandoCondicao -> SE ExpressaoRelacional ENTAO ListaComandos ContraCondicao FIM
+Rule 26    ContraCondicao -> SENAO ListaComandos
+Rule 27    ContraCondicao -> <empty>
+Rule 28    ComandoRepeticao -> ENQUANTO ExpressaoRelacional ListaComandos FIM
+Rule 29    SubAlgoritmo -> INICIO ListaComandos FIM
+Rule 30    ExpressaoAritmetica -> TermoAritmetico SentencaAritmetica
+Rule 31    SentencaAritmetica -> + TermoAritmetico SentencaAritmetica
+Rule 32    SentencaAritmetica -> - TermoAritmetico SentencaAritmetica
+Rule 33    SentencaAritmetica -> <empty>
+Rule 34    TermoAritmetico -> FatorAritmetico ProposicaoAritmetica
+Rule 35    ProposicaoAritmetica -> * FatorAritmetico ProposicaoAritmetica
+Rule 36    ProposicaoAritmetica -> / FatorAritmetico ProposicaoAritmetica
+Rule 37    ProposicaoAritmetica -> <empty>
+Rule 38    FatorAritmetico -> NUMINT
+Rule 39    FatorAritmetico -> NUMREAL
+Rule 40    FatorAritmetico -> NAME
+Rule 41    FatorAritmetico -> ( ExpressaoAritmetica )
+Rule 42    ExpressaoRelacional -> TermoRelacional SentencaRelacional
+Rule 43    TermoRelacional -> ExpressaoAritmetica OP_REL ExpressaoAritmetica
+Rule 44    TermoRelacional -> ( ExpressaoRelacional )
+Rule 45    SentencaRelacional -> E_BOOL TermoRelacional SentencaRelacional
+Rule 46    SentencaRelacional -> OU_BOOL TermoRelacional SentencaRelacional
+Rule 47    SentencaRelacional -> <empty>
+
+Terminals, with rules where they appear
+
+(                    : 41 44
+)                    : 41 44
+*                    : 35
++                    : 31
+-                    : 32
+/                    : 36
+ATRIB                : 20
+CADEIA               : 23
+COMMENT              : 19
+DECLARACOES          : 1
+ENQUANTO             : 28
+ENTAO                : 25
+ESCREVA              : 24
+E_BOOL               : 45
+FIM                  : 25 28 29
+INICIO               : 29
+INTEIRO              : 6
+LEIA                 : 21
+LOGICO               : 9
+NAME                 : 5 20 21 22 40
+NUMINT               : 38
+NUMREAL              : 39
+OP_REL               : 43
+OU_BOOL              : 46
+PC                   : 1 1 5
+PROGRAMA             : 1
+REAL                 : 7
+SE                   : 25
+SENAO                : 26
+TEXTO                : 8
+error                : 
+
+Nonterminals, with rules where they appear
+
+Comando              : 10
+ComandoAtribuicao    : 12
+ComandoComentario    : 18
+ComandoCondicao      : 15
+ComandoEntrada       : 13
+ComandoRepeticao     : 16
+ComandoSaida         : 14
+ContraCondicao       : 25
+Declaracao           : 2
+ExpressaoAritmetica  : 20 41 43 43
+ExpressaoRelacional  : 25 28 44
+FatorAritmetico      : 34 35 36
+ListaComandos        : 1 10 25 26 28 29
+ListaDeclaracoes     : 1 3
+OutrasDeclaracoes    : 2
+Programa             : 0
+ProposicaoAritmetica : 34 35 36
+SentencaAritmetica   : 30 31 32
+SentencaRelacional   : 42 45 46
+SubAlgoritmo         : 17
+TermoAritmetico      : 30 31 32
+TermoRelacional      : 42 45 46
+TipoSaida            : 24
+TipoVar              : 5
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . Programa
+    (1) Programa -> . PC DECLARACOES ListaDeclaracoes PC PROGRAMA ListaComandos
+
+    PC              shift and go to state 2
+
+    Programa                       shift and go to state 1
+
+state 1
+
+    (0) S' -> Programa .
+
+
+
+state 2
+
+    (1) Programa -> PC . DECLARACOES ListaDeclaracoes PC PROGRAMA ListaComandos
+
+    DECLARACOES     shift and go to state 3
+
+
+state 3
+
+    (1) Programa -> PC DECLARACOES . ListaDeclaracoes PC PROGRAMA ListaComandos
+    (2) ListaDeclaracoes -> . Declaracao OutrasDeclaracoes
+    (5) Declaracao -> . NAME PC TipoVar
+
+    NAME            shift and go to state 6
+
+    ListaDeclaracoes               shift and go to state 4
+    Declaracao                     shift and go to state 5
+
+state 4
+
+    (1) Programa -> PC DECLARACOES ListaDeclaracoes . PC PROGRAMA ListaComandos
+
+    PC              shift and go to state 7
+
+
+state 5
+
+    (2) ListaDeclaracoes -> Declaracao . OutrasDeclaracoes
+    (3) OutrasDeclaracoes -> . ListaDeclaracoes
+    (4) OutrasDeclaracoes -> .
+    (2) ListaDeclaracoes -> . Declaracao OutrasDeclaracoes
+    (5) Declaracao -> . NAME PC TipoVar
+
+    PC              reduce using rule 4 (OutrasDeclaracoes -> .)
+    NAME            shift and go to state 6
+
+    Declaracao                     shift and go to state 5
+    OutrasDeclaracoes              shift and go to state 8
+    ListaDeclaracoes               shift and go to state 9
+
+state 6
+
+    (5) Declaracao -> NAME . PC TipoVar
+
+    PC              shift and go to state 10
+
+
+state 7
+
+    (1) Programa -> PC DECLARACOES ListaDeclaracoes PC . PROGRAMA ListaComandos
+
+    PROGRAMA        shift and go to state 11
+
+
+state 8
+
+    (2) ListaDeclaracoes -> Declaracao OutrasDeclaracoes .
+
+    PC              reduce using rule 2 (ListaDeclaracoes -> Declaracao OutrasDeclaracoes .)
+
+
+state 9
+
+    (3) OutrasDeclaracoes -> ListaDeclaracoes .
+
+    PC              reduce using rule 3 (OutrasDeclaracoes -> ListaDeclaracoes .)
+
+
+state 10
+
+    (5) Declaracao -> NAME PC . TipoVar
+    (6) TipoVar -> . INTEIRO
+    (7) TipoVar -> . REAL
+    (8) TipoVar -> . TEXTO
+    (9) TipoVar -> . LOGICO
+
+    INTEIRO         shift and go to state 13
+    REAL            shift and go to state 14
+    TEXTO           shift and go to state 15
+    LOGICO          shift and go to state 16
+
+    TipoVar                        shift and go to state 12
+
+state 11
+
+    (1) Programa -> PC DECLARACOES ListaDeclaracoes PC PROGRAMA . ListaComandos
+    (10) ListaComandos -> . Comando ListaComandos
+    (11) ListaComandos -> .
+    (12) Comando -> . ComandoAtribuicao
+    (13) Comando -> . ComandoEntrada
+    (14) Comando -> . ComandoSaida
+    (15) Comando -> . ComandoCondicao
+    (16) Comando -> . ComandoRepeticao
+    (17) Comando -> . SubAlgoritmo
+    (18) Comando -> . ComandoComentario
+    (20) ComandoAtribuicao -> . NAME ATRIB ExpressaoAritmetica
+    (21) ComandoEntrada -> . LEIA NAME
+    (24) ComandoSaida -> . ESCREVA TipoSaida
+    (25) ComandoCondicao -> . SE ExpressaoRelacional ENTAO ListaComandos ContraCondicao FIM
+    (28) ComandoRepeticao -> . ENQUANTO ExpressaoRelacional ListaComandos FIM
+    (29) SubAlgoritmo -> . INICIO ListaComandos FIM
+    (19) ComandoComentario -> . COMMENT
+
+    $end            reduce using rule 11 (ListaComandos -> .)
+    NAME            shift and go to state 26
+    LEIA            shift and go to state 27
+    ESCREVA         shift and go to state 28
+    SE              shift and go to state 29
+    ENQUANTO        shift and go to state 30
+    INICIO          shift and go to state 31
+    COMMENT         shift and go to state 32
+
+    ListaComandos                  shift and go to state 17
+    Comando                        shift and go to state 18
+    ComandoAtribuicao              shift and go to state 19
+    ComandoEntrada                 shift and go to state 20
+    ComandoSaida                   shift and go to state 21
+    ComandoCondicao                shift and go to state 22
+    ComandoRepeticao               shift and go to state 23
+    SubAlgoritmo                   shift and go to state 24
+    ComandoComentario              shift and go to state 25
+
+state 12
+
+    (5) Declaracao -> NAME PC TipoVar .
+
+    NAME            reduce using rule 5 (Declaracao -> NAME PC TipoVar .)
+    PC              reduce using rule 5 (Declaracao -> NAME PC TipoVar .)
+
+
+state 13
+
+    (6) TipoVar -> INTEIRO .
+
+    NAME            reduce using rule 6 (TipoVar -> INTEIRO .)
+    PC              reduce using rule 6 (TipoVar -> INTEIRO .)
+
+
+state 14
+
+    (7) TipoVar -> REAL .
+
+    NAME            reduce using rule 7 (TipoVar -> REAL .)
+    PC              reduce using rule 7 (TipoVar -> REAL .)
+
+
+state 15
+
+    (8) TipoVar -> TEXTO .
+
+    NAME            reduce using rule 8 (TipoVar -> TEXTO .)
+    PC              reduce using rule 8 (TipoVar -> TEXTO .)
+
+
+state 16
+
+    (9) TipoVar -> LOGICO .
+
+    NAME            reduce using rule 9 (TipoVar -> LOGICO .)
+    PC              reduce using rule 9 (TipoVar -> LOGICO .)
+
+
+state 17
+
+    (1) Programa -> PC DECLARACOES ListaDeclaracoes PC PROGRAMA ListaComandos .
+
+    $end            reduce using rule 1 (Programa -> PC DECLARACOES ListaDeclaracoes PC PROGRAMA ListaComandos .)
+
+
+state 18
+
+    (10) ListaComandos -> Comando . ListaComandos
+    (10) ListaComandos -> . Comando ListaComandos
+    (11) ListaComandos -> .
+    (12) Comando -> . ComandoAtribuicao
+    (13) Comando -> . ComandoEntrada
+    (14) Comando -> . ComandoSaida
+    (15) Comando -> . ComandoCondicao
+    (16) Comando -> . ComandoRepeticao
+    (17) Comando -> . SubAlgoritmo
+    (18) Comando -> . ComandoComentario
+    (20) ComandoAtribuicao -> . NAME ATRIB ExpressaoAritmetica
+    (21) ComandoEntrada -> . LEIA NAME
+    (24) ComandoSaida -> . ESCREVA TipoSaida
+    (25) ComandoCondicao -> . SE ExpressaoRelacional ENTAO ListaComandos ContraCondicao FIM
+    (28) ComandoRepeticao -> . ENQUANTO ExpressaoRelacional ListaComandos FIM
+    (29) SubAlgoritmo -> . INICIO ListaComandos FIM
+    (19) ComandoComentario -> . COMMENT
+
+    $end            reduce using rule 11 (ListaComandos -> .)
+    FIM             reduce using rule 11 (ListaComandos -> .)
+    SENAO           reduce using rule 11 (ListaComandos -> .)
+    NAME            shift and go to state 26
+    LEIA            shift and go to state 27
+    ESCREVA         shift and go to state 28
+    SE              shift and go to state 29
+    ENQUANTO        shift and go to state 30
+    INICIO          shift and go to state 31
+    COMMENT         shift and go to state 32
+
+    Comando                        shift and go to state 18
+    ListaComandos                  shift and go to state 33
+    ComandoAtribuicao              shift and go to state 19
+    ComandoEntrada                 shift and go to state 20
+    ComandoSaida                   shift and go to state 21
+    ComandoCondicao                shift and go to state 22
+    ComandoRepeticao               shift and go to state 23
+    SubAlgoritmo                   shift and go to state 24
+    ComandoComentario              shift and go to state 25
+
+state 19
+
+    (12) Comando -> ComandoAtribuicao .
+
+    NAME            reduce using rule 12 (Comando -> ComandoAtribuicao .)
+    LEIA            reduce using rule 12 (Comando -> ComandoAtribuicao .)
+    ESCREVA         reduce using rule 12 (Comando -> ComandoAtribuicao .)
+    SE              reduce using rule 12 (Comando -> ComandoAtribuicao .)
+    ENQUANTO        reduce using rule 12 (Comando -> ComandoAtribuicao .)
+    INICIO          reduce using rule 12 (Comando -> ComandoAtribuicao .)
+    COMMENT         reduce using rule 12 (Comando -> ComandoAtribuicao .)
+    $end            reduce using rule 12 (Comando -> ComandoAtribuicao .)
+    FIM             reduce using rule 12 (Comando -> ComandoAtribuicao .)
+    SENAO           reduce using rule 12 (Comando -> ComandoAtribuicao .)
+
+
+state 20
+
+    (13) Comando -> ComandoEntrada .
+
+    NAME            reduce using rule 13 (Comando -> ComandoEntrada .)
+    LEIA            reduce using rule 13 (Comando -> ComandoEntrada .)
+    ESCREVA         reduce using rule 13 (Comando -> ComandoEntrada .)
+    SE              reduce using rule 13 (Comando -> ComandoEntrada .)
+    ENQUANTO        reduce using rule 13 (Comando -> ComandoEntrada .)
+    INICIO          reduce using rule 13 (Comando -> ComandoEntrada .)
+    COMMENT         reduce using rule 13 (Comando -> ComandoEntrada .)
+    $end            reduce using rule 13 (Comando -> ComandoEntrada .)
+    FIM             reduce using rule 13 (Comando -> ComandoEntrada .)
+    SENAO           reduce using rule 13 (Comando -> ComandoEntrada .)
+
+
+state 21
+
+    (14) Comando -> ComandoSaida .
+
+    NAME            reduce using rule 14 (Comando -> ComandoSaida .)
+    LEIA            reduce using rule 14 (Comando -> ComandoSaida .)
+    ESCREVA         reduce using rule 14 (Comando -> ComandoSaida .)
+    SE              reduce using rule 14 (Comando -> ComandoSaida .)
+    ENQUANTO        reduce using rule 14 (Comando -> ComandoSaida .)
+    INICIO          reduce using rule 14 (Comando -> ComandoSaida .)
+    COMMENT         reduce using rule 14 (Comando -> ComandoSaida .)
+    $end            reduce using rule 14 (Comando -> ComandoSaida .)
+    FIM             reduce using rule 14 (Comando -> ComandoSaida .)
+    SENAO           reduce using rule 14 (Comando -> ComandoSaida .)
+
+
+state 22
+
+    (15) Comando -> ComandoCondicao .
+
+    NAME            reduce using rule 15 (Comando -> ComandoCondicao .)
+    LEIA            reduce using rule 15 (Comando -> ComandoCondicao .)
+    ESCREVA         reduce using rule 15 (Comando -> ComandoCondicao .)
+    SE              reduce using rule 15 (Comando -> ComandoCondicao .)
+    ENQUANTO        reduce using rule 15 (Comando -> ComandoCondicao .)
+    INICIO          reduce using rule 15 (Comando -> ComandoCondicao .)
+    COMMENT         reduce using rule 15 (Comando -> ComandoCondicao .)
+    $end            reduce using rule 15 (Comando -> ComandoCondicao .)
+    FIM             reduce using rule 15 (Comando -> ComandoCondicao .)
+    SENAO           reduce using rule 15 (Comando -> ComandoCondicao .)
+
+
+state 23
+
+    (16) Comando -> ComandoRepeticao .
+
+    NAME            reduce using rule 16 (Comando -> ComandoRepeticao .)
+    LEIA            reduce using rule 16 (Comando -> ComandoRepeticao .)
+    ESCREVA         reduce using rule 16 (Comando -> ComandoRepeticao .)
+    SE              reduce using rule 16 (Comando -> ComandoRepeticao .)
+    ENQUANTO        reduce using rule 16 (Comando -> ComandoRepeticao .)
+    INICIO          reduce using rule 16 (Comando -> ComandoRepeticao .)
+    COMMENT         reduce using rule 16 (Comando -> ComandoRepeticao .)
+    $end            reduce using rule 16 (Comando -> ComandoRepeticao .)
+    FIM             reduce using rule 16 (Comando -> ComandoRepeticao .)
+    SENAO           reduce using rule 16 (Comando -> ComandoRepeticao .)
+
+
+state 24
+
+    (17) Comando -> SubAlgoritmo .
+
+    NAME            reduce using rule 17 (Comando -> SubAlgoritmo .)
+    LEIA            reduce using rule 17 (Comando -> SubAlgoritmo .)
+    ESCREVA         reduce using rule 17 (Comando -> SubAlgoritmo .)
+    SE              reduce using rule 17 (Comando -> SubAlgoritmo .)
+    ENQUANTO        reduce using rule 17 (Comando -> SubAlgoritmo .)
+    INICIO          reduce using rule 17 (Comando -> SubAlgoritmo .)
+    COMMENT         reduce using rule 17 (Comando -> SubAlgoritmo .)
+    $end            reduce using rule 17 (Comando -> SubAlgoritmo .)
+    FIM             reduce using rule 17 (Comando -> SubAlgoritmo .)
+    SENAO           reduce using rule 17 (Comando -> SubAlgoritmo .)
+
+
+state 25
+
+    (18) Comando -> ComandoComentario .
+
+    NAME            reduce using rule 18 (Comando -> ComandoComentario .)
+    LEIA            reduce using rule 18 (Comando -> ComandoComentario .)
+    ESCREVA         reduce using rule 18 (Comando -> ComandoComentario .)
+    SE              reduce using rule 18 (Comando -> ComandoComentario .)
+    ENQUANTO        reduce using rule 18 (Comando -> ComandoComentario .)
+    INICIO          reduce using rule 18 (Comando -> ComandoComentario .)
+    COMMENT         reduce using rule 18 (Comando -> ComandoComentario .)
+    $end            reduce using rule 18 (Comando -> ComandoComentario .)
+    FIM             reduce using rule 18 (Comando -> ComandoComentario .)
+    SENAO           reduce using rule 18 (Comando -> ComandoComentario .)
+
+
+state 26
+
+    (20) ComandoAtribuicao -> NAME . ATRIB ExpressaoAritmetica
+
+    ATRIB           shift and go to state 34
+
+
+state 27
+
+    (21) ComandoEntrada -> LEIA . NAME
+
+    NAME            shift and go to state 35
+
+
+state 28
+
+    (24) ComandoSaida -> ESCREVA . TipoSaida
+    (22) TipoSaida -> . NAME
+    (23) TipoSaida -> . CADEIA
+
+    NAME            shift and go to state 37
+    CADEIA          shift and go to state 38
+
+    TipoSaida                      shift and go to state 36
+
+state 29
+
+    (25) ComandoCondicao -> SE . ExpressaoRelacional ENTAO ListaComandos ContraCondicao FIM
+    (42) ExpressaoRelacional -> . TermoRelacional SentencaRelacional
+    (43) TermoRelacional -> . ExpressaoAritmetica OP_REL ExpressaoAritmetica
+    (44) TermoRelacional -> . ( ExpressaoRelacional )
+    (30) ExpressaoAritmetica -> . TermoAritmetico SentencaAritmetica
+    (34) TermoAritmetico -> . FatorAritmetico ProposicaoAritmetica
+    (38) FatorAritmetico -> . NUMINT
+    (39) FatorAritmetico -> . NUMREAL
+    (40) FatorAritmetico -> . NAME
+    (41) FatorAritmetico -> . ( ExpressaoAritmetica )
+
+    (               shift and go to state 42
+    NUMINT          shift and go to state 45
+    NUMREAL         shift and go to state 46
+    NAME            shift and go to state 47
+
+    ExpressaoRelacional            shift and go to state 39
+    TermoRelacional                shift and go to state 40
+    ExpressaoAritmetica            shift and go to state 41
+    TermoAritmetico                shift and go to state 43
+    FatorAritmetico                shift and go to state 44
+
+state 30
+
+    (28) ComandoRepeticao -> ENQUANTO . ExpressaoRelacional ListaComandos FIM
+    (42) ExpressaoRelacional -> . TermoRelacional SentencaRelacional
+    (43) TermoRelacional -> . ExpressaoAritmetica OP_REL ExpressaoAritmetica
+    (44) TermoRelacional -> . ( ExpressaoRelacional )
+    (30) ExpressaoAritmetica -> . TermoAritmetico SentencaAritmetica
+    (34) TermoAritmetico -> . FatorAritmetico ProposicaoAritmetica
+    (38) FatorAritmetico -> . NUMINT
+    (39) FatorAritmetico -> . NUMREAL
+    (40) FatorAritmetico -> . NAME
+    (41) FatorAritmetico -> . ( ExpressaoAritmetica )
+
+    (               shift and go to state 42
+    NUMINT          shift and go to state 45
+    NUMREAL         shift and go to state 46
+    NAME            shift and go to state 47
+
+    ExpressaoRelacional            shift and go to state 48
+    TermoRelacional                shift and go to state 40
+    ExpressaoAritmetica            shift and go to state 41
+    TermoAritmetico                shift and go to state 43
+    FatorAritmetico                shift and go to state 44
+
+state 31
+
+    (29) SubAlgoritmo -> INICIO . ListaComandos FIM
+    (10) ListaComandos -> . Comando ListaComandos
+    (11) ListaComandos -> .
+    (12) Comando -> . ComandoAtribuicao
+    (13) Comando -> . ComandoEntrada
+    (14) Comando -> . ComandoSaida
+    (15) Comando -> . ComandoCondicao
+    (16) Comando -> . ComandoRepeticao
+    (17) Comando -> . SubAlgoritmo
+    (18) Comando -> . ComandoComentario
+    (20) ComandoAtribuicao -> . NAME ATRIB ExpressaoAritmetica
+    (21) ComandoEntrada -> . LEIA NAME
+    (24) ComandoSaida -> . ESCREVA TipoSaida
+    (25) ComandoCondicao -> . SE ExpressaoRelacional ENTAO ListaComandos ContraCondicao FIM
+    (28) ComandoRepeticao -> . ENQUANTO ExpressaoRelacional ListaComandos FIM
+    (29) SubAlgoritmo -> . INICIO ListaComandos FIM
+    (19) ComandoComentario -> . COMMENT
+
+    FIM             reduce using rule 11 (ListaComandos -> .)
+    NAME            shift and go to state 26
+    LEIA            shift and go to state 27
+    ESCREVA         shift and go to state 28
+    SE              shift and go to state 29
+    ENQUANTO        shift and go to state 30
+    INICIO          shift and go to state 31
+    COMMENT         shift and go to state 32
+
+    ListaComandos                  shift and go to state 49
+    Comando                        shift and go to state 18
+    ComandoAtribuicao              shift and go to state 19
+    ComandoEntrada                 shift and go to state 20
+    ComandoSaida                   shift and go to state 21
+    ComandoCondicao                shift and go to state 22
+    ComandoRepeticao               shift and go to state 23
+    SubAlgoritmo                   shift and go to state 24
+    ComandoComentario              shift and go to state 25
+
+state 32
+
+    (19) ComandoComentario -> COMMENT .
+
+    NAME            reduce using rule 19 (ComandoComentario -> COMMENT .)
+    LEIA            reduce using rule 19 (ComandoComentario -> COMMENT .)
+    ESCREVA         reduce using rule 19 (ComandoComentario -> COMMENT .)
+    SE              reduce using rule 19 (ComandoComentario -> COMMENT .)
+    ENQUANTO        reduce using rule 19 (ComandoComentario -> COMMENT .)
+    INICIO          reduce using rule 19 (ComandoComentario -> COMMENT .)
+    COMMENT         reduce using rule 19 (ComandoComentario -> COMMENT .)
+    $end            reduce using rule 19 (ComandoComentario -> COMMENT .)
+    FIM             reduce using rule 19 (ComandoComentario -> COMMENT .)
+    SENAO           reduce using rule 19 (ComandoComentario -> COMMENT .)
+
+
+state 33
+
+    (10) ListaComandos -> Comando ListaComandos .
+
+    $end            reduce using rule 10 (ListaComandos -> Comando ListaComandos .)
+    FIM             reduce using rule 10 (ListaComandos -> Comando ListaComandos .)
+    SENAO           reduce using rule 10 (ListaComandos -> Comando ListaComandos .)
+
+
+state 34
+
+    (20) ComandoAtribuicao -> NAME ATRIB . ExpressaoAritmetica
+    (30) ExpressaoAritmetica -> . TermoAritmetico SentencaAritmetica
+    (34) TermoAritmetico -> . FatorAritmetico ProposicaoAritmetica
+    (38) FatorAritmetico -> . NUMINT
+    (39) FatorAritmetico -> . NUMREAL
+    (40) FatorAritmetico -> . NAME
+    (41) FatorAritmetico -> . ( ExpressaoAritmetica )
+
+    NUMINT          shift and go to state 45
+    NUMREAL         shift and go to state 46
+    NAME            shift and go to state 47
+    (               shift and go to state 51
+
+    ExpressaoAritmetica            shift and go to state 50
+    TermoAritmetico                shift and go to state 43
+    FatorAritmetico                shift and go to state 44
+
+state 35
+
+    (21) ComandoEntrada -> LEIA NAME .
+
+    NAME            reduce using rule 21 (ComandoEntrada -> LEIA NAME .)
+    LEIA            reduce using rule 21 (ComandoEntrada -> LEIA NAME .)
+    ESCREVA         reduce using rule 21 (ComandoEntrada -> LEIA NAME .)
+    SE              reduce using rule 21 (ComandoEntrada -> LEIA NAME .)
+    ENQUANTO        reduce using rule 21 (ComandoEntrada -> LEIA NAME .)
+    INICIO          reduce using rule 21 (ComandoEntrada -> LEIA NAME .)
+    COMMENT         reduce using rule 21 (ComandoEntrada -> LEIA NAME .)
+    $end            reduce using rule 21 (ComandoEntrada -> LEIA NAME .)
+    FIM             reduce using rule 21 (ComandoEntrada -> LEIA NAME .)
+    SENAO           reduce using rule 21 (ComandoEntrada -> LEIA NAME .)
+
+
+state 36
+
+    (24) ComandoSaida -> ESCREVA TipoSaida .
+
+    NAME            reduce using rule 24 (ComandoSaida -> ESCREVA TipoSaida .)
+    LEIA            reduce using rule 24 (ComandoSaida -> ESCREVA TipoSaida .)
+    ESCREVA         reduce using rule 24 (ComandoSaida -> ESCREVA TipoSaida .)
+    SE              reduce using rule 24 (ComandoSaida -> ESCREVA TipoSaida .)
+    ENQUANTO        reduce using rule 24 (ComandoSaida -> ESCREVA TipoSaida .)
+    INICIO          reduce using rule 24 (ComandoSaida -> ESCREVA TipoSaida .)
+    COMMENT         reduce using rule 24 (ComandoSaida -> ESCREVA TipoSaida .)
+    $end            reduce using rule 24 (ComandoSaida -> ESCREVA TipoSaida .)
+    FIM             reduce using rule 24 (ComandoSaida -> ESCREVA TipoSaida .)
+    SENAO           reduce using rule 24 (ComandoSaida -> ESCREVA TipoSaida .)
+
+
+state 37
+
+    (22) TipoSaida -> NAME .
+
+    NAME            reduce using rule 22 (TipoSaida -> NAME .)
+    LEIA            reduce using rule 22 (TipoSaida -> NAME .)
+    ESCREVA         reduce using rule 22 (TipoSaida -> NAME .)
+    SE              reduce using rule 22 (TipoSaida -> NAME .)
+    ENQUANTO        reduce using rule 22 (TipoSaida -> NAME .)
+    INICIO          reduce using rule 22 (TipoSaida -> NAME .)
+    COMMENT         reduce using rule 22 (TipoSaida -> NAME .)
+    $end            reduce using rule 22 (TipoSaida -> NAME .)
+    FIM             reduce using rule 22 (TipoSaida -> NAME .)
+    SENAO           reduce using rule 22 (TipoSaida -> NAME .)
+
+
+state 38
+
+    (23) TipoSaida -> CADEIA .
+
+    NAME            reduce using rule 23 (TipoSaida -> CADEIA .)
+    LEIA            reduce using rule 23 (TipoSaida -> CADEIA .)
+    ESCREVA         reduce using rule 23 (TipoSaida -> CADEIA .)
+    SE              reduce using rule 23 (TipoSaida -> CADEIA .)
+    ENQUANTO        reduce using rule 23 (TipoSaida -> CADEIA .)
+    INICIO          reduce using rule 23 (TipoSaida -> CADEIA .)
+    COMMENT         reduce using rule 23 (TipoSaida -> CADEIA .)
+    $end            reduce using rule 23 (TipoSaida -> CADEIA .)
+    FIM             reduce using rule 23 (TipoSaida -> CADEIA .)
+    SENAO           reduce using rule 23 (TipoSaida -> CADEIA .)
+
+
+state 39
+
+    (25) ComandoCondicao -> SE ExpressaoRelacional . ENTAO ListaComandos ContraCondicao FIM
+
+    ENTAO           shift and go to state 52
+
+
+state 40
+
+    (42) ExpressaoRelacional -> TermoRelacional . SentencaRelacional
+    (45) SentencaRelacional -> . E_BOOL TermoRelacional SentencaRelacional
+    (46) SentencaRelacional -> . OU_BOOL TermoRelacional SentencaRelacional
+    (47) SentencaRelacional -> .
+
+    E_BOOL          shift and go to state 54
+    OU_BOOL         shift and go to state 55
+    ENTAO           reduce using rule 47 (SentencaRelacional -> .)
+    NAME            reduce using rule 47 (SentencaRelacional -> .)
+    LEIA            reduce using rule 47 (SentencaRelacional -> .)
+    ESCREVA         reduce using rule 47 (SentencaRelacional -> .)
+    SE              reduce using rule 47 (SentencaRelacional -> .)
+    ENQUANTO        reduce using rule 47 (SentencaRelacional -> .)
+    INICIO          reduce using rule 47 (SentencaRelacional -> .)
+    COMMENT         reduce using rule 47 (SentencaRelacional -> .)
+    FIM             reduce using rule 47 (SentencaRelacional -> .)
+    )               reduce using rule 47 (SentencaRelacional -> .)
+
+    SentencaRelacional             shift and go to state 53
+
+state 41
+
+    (43) TermoRelacional -> ExpressaoAritmetica . OP_REL ExpressaoAritmetica
+
+    OP_REL          shift and go to state 56
+
+
+state 42
+
+    (44) TermoRelacional -> ( . ExpressaoRelacional )
+    (41) FatorAritmetico -> ( . ExpressaoAritmetica )
+    (42) ExpressaoRelacional -> . TermoRelacional SentencaRelacional
+    (30) ExpressaoAritmetica -> . TermoAritmetico SentencaAritmetica
+    (43) TermoRelacional -> . ExpressaoAritmetica OP_REL ExpressaoAritmetica
+    (44) TermoRelacional -> . ( ExpressaoRelacional )
+    (34) TermoAritmetico -> . FatorAritmetico ProposicaoAritmetica
+    (38) FatorAritmetico -> . NUMINT
+    (39) FatorAritmetico -> . NUMREAL
+    (40) FatorAritmetico -> . NAME
+    (41) FatorAritmetico -> . ( ExpressaoAritmetica )
+
+    (               shift and go to state 42
+    NUMINT          shift and go to state 45
+    NUMREAL         shift and go to state 46
+    NAME            shift and go to state 47
+
+    ExpressaoRelacional            shift and go to state 57
+    ExpressaoAritmetica            shift and go to state 58
+    TermoRelacional                shift and go to state 40
+    TermoAritmetico                shift and go to state 43
+    FatorAritmetico                shift and go to state 44
+
+state 43
+
+    (30) ExpressaoAritmetica -> TermoAritmetico . SentencaAritmetica
+    (31) SentencaAritmetica -> . + TermoAritmetico SentencaAritmetica
+    (32) SentencaAritmetica -> . - TermoAritmetico SentencaAritmetica
+    (33) SentencaAritmetica -> .
+
+    +               shift and go to state 60
+    -               shift and go to state 61
+    OP_REL          reduce using rule 33 (SentencaAritmetica -> .)
+    NAME            reduce using rule 33 (SentencaAritmetica -> .)
+    LEIA            reduce using rule 33 (SentencaAritmetica -> .)
+    ESCREVA         reduce using rule 33 (SentencaAritmetica -> .)
+    SE              reduce using rule 33 (SentencaAritmetica -> .)
+    ENQUANTO        reduce using rule 33 (SentencaAritmetica -> .)
+    INICIO          reduce using rule 33 (SentencaAritmetica -> .)
+    COMMENT         reduce using rule 33 (SentencaAritmetica -> .)
+    $end            reduce using rule 33 (SentencaAritmetica -> .)
+    FIM             reduce using rule 33 (SentencaAritmetica -> .)
+    SENAO           reduce using rule 33 (SentencaAritmetica -> .)
+    )               reduce using rule 33 (SentencaAritmetica -> .)
+    E_BOOL          reduce using rule 33 (SentencaAritmetica -> .)
+    OU_BOOL         reduce using rule 33 (SentencaAritmetica -> .)
+    ENTAO           reduce using rule 33 (SentencaAritmetica -> .)
+
+    SentencaAritmetica             shift and go to state 59
+
+state 44
+
+    (34) TermoAritmetico -> FatorAritmetico . ProposicaoAritmetica
+    (35) ProposicaoAritmetica -> . * FatorAritmetico ProposicaoAritmetica
+    (36) ProposicaoAritmetica -> . / FatorAritmetico ProposicaoAritmetica
+    (37) ProposicaoAritmetica -> .
+
+    *               shift and go to state 63
+    /               shift and go to state 64
+    +               reduce using rule 37 (ProposicaoAritmetica -> .)
+    -               reduce using rule 37 (ProposicaoAritmetica -> .)
+    OP_REL          reduce using rule 37 (ProposicaoAritmetica -> .)
+    NAME            reduce using rule 37 (ProposicaoAritmetica -> .)
+    LEIA            reduce using rule 37 (ProposicaoAritmetica -> .)
+    ESCREVA         reduce using rule 37 (ProposicaoAritmetica -> .)
+    SE              reduce using rule 37 (ProposicaoAritmetica -> .)
+    ENQUANTO        reduce using rule 37 (ProposicaoAritmetica -> .)
+    INICIO          reduce using rule 37 (ProposicaoAritmetica -> .)
+    COMMENT         reduce using rule 37 (ProposicaoAritmetica -> .)
+    $end            reduce using rule 37 (ProposicaoAritmetica -> .)
+    FIM             reduce using rule 37 (ProposicaoAritmetica -> .)
+    SENAO           reduce using rule 37 (ProposicaoAritmetica -> .)
+    )               reduce using rule 37 (ProposicaoAritmetica -> .)
+    E_BOOL          reduce using rule 37 (ProposicaoAritmetica -> .)
+    OU_BOOL         reduce using rule 37 (ProposicaoAritmetica -> .)
+    ENTAO           reduce using rule 37 (ProposicaoAritmetica -> .)
+
+    ProposicaoAritmetica           shift and go to state 62
+
+state 45
+
+    (38) FatorAritmetico -> NUMINT .
+
+    *               reduce using rule 38 (FatorAritmetico -> NUMINT .)
+    /               reduce using rule 38 (FatorAritmetico -> NUMINT .)
+    +               reduce using rule 38 (FatorAritmetico -> NUMINT .)
+    -               reduce using rule 38 (FatorAritmetico -> NUMINT .)
+    OP_REL          reduce using rule 38 (FatorAritmetico -> NUMINT .)
+    NAME            reduce using rule 38 (FatorAritmetico -> NUMINT .)
+    LEIA            reduce using rule 38 (FatorAritmetico -> NUMINT .)
+    ESCREVA         reduce using rule 38 (FatorAritmetico -> NUMINT .)
+    SE              reduce using rule 38 (FatorAritmetico -> NUMINT .)
+    ENQUANTO        reduce using rule 38 (FatorAritmetico -> NUMINT .)
+    INICIO          reduce using rule 38 (FatorAritmetico -> NUMINT .)
+    COMMENT         reduce using rule 38 (FatorAritmetico -> NUMINT .)
+    $end            reduce using rule 38 (FatorAritmetico -> NUMINT .)
+    FIM             reduce using rule 38 (FatorAritmetico -> NUMINT .)
+    SENAO           reduce using rule 38 (FatorAritmetico -> NUMINT .)
+    )               reduce using rule 38 (FatorAritmetico -> NUMINT .)
+    E_BOOL          reduce using rule 38 (FatorAritmetico -> NUMINT .)
+    OU_BOOL         reduce using rule 38 (FatorAritmetico -> NUMINT .)
+    ENTAO           reduce using rule 38 (FatorAritmetico -> NUMINT .)
+
+
+state 46
+
+    (39) FatorAritmetico -> NUMREAL .
+
+    *               reduce using rule 39 (FatorAritmetico -> NUMREAL .)
+    /               reduce using rule 39 (FatorAritmetico -> NUMREAL .)
+    +               reduce using rule 39 (FatorAritmetico -> NUMREAL .)
+    -               reduce using rule 39 (FatorAritmetico -> NUMREAL .)
+    OP_REL          reduce using rule 39 (FatorAritmetico -> NUMREAL .)
+    NAME            reduce using rule 39 (FatorAritmetico -> NUMREAL .)
+    LEIA            reduce using rule 39 (FatorAritmetico -> NUMREAL .)
+    ESCREVA         reduce using rule 39 (FatorAritmetico -> NUMREAL .)
+    SE              reduce using rule 39 (FatorAritmetico -> NUMREAL .)
+    ENQUANTO        reduce using rule 39 (FatorAritmetico -> NUMREAL .)
+    INICIO          reduce using rule 39 (FatorAritmetico -> NUMREAL .)
+    COMMENT         reduce using rule 39 (FatorAritmetico -> NUMREAL .)
+    $end            reduce using rule 39 (FatorAritmetico -> NUMREAL .)
+    FIM             reduce using rule 39 (FatorAritmetico -> NUMREAL .)
+    SENAO           reduce using rule 39 (FatorAritmetico -> NUMREAL .)
+    )               reduce using rule 39 (FatorAritmetico -> NUMREAL .)
+    E_BOOL          reduce using rule 39 (FatorAritmetico -> NUMREAL .)
+    OU_BOOL         reduce using rule 39 (FatorAritmetico -> NUMREAL .)
+    ENTAO           reduce using rule 39 (FatorAritmetico -> NUMREAL .)
+
+
+state 47
+
+    (40) FatorAritmetico -> NAME .
+
+    *               reduce using rule 40 (FatorAritmetico -> NAME .)
+    /               reduce using rule 40 (FatorAritmetico -> NAME .)
+    +               reduce using rule 40 (FatorAritmetico -> NAME .)
+    -               reduce using rule 40 (FatorAritmetico -> NAME .)
+    OP_REL          reduce using rule 40 (FatorAritmetico -> NAME .)
+    NAME            reduce using rule 40 (FatorAritmetico -> NAME .)
+    LEIA            reduce using rule 40 (FatorAritmetico -> NAME .)
+    ESCREVA         reduce using rule 40 (FatorAritmetico -> NAME .)
+    SE              reduce using rule 40 (FatorAritmetico -> NAME .)
+    ENQUANTO        reduce using rule 40 (FatorAritmetico -> NAME .)
+    INICIO          reduce using rule 40 (FatorAritmetico -> NAME .)
+    COMMENT         reduce using rule 40 (FatorAritmetico -> NAME .)
+    $end            reduce using rule 40 (FatorAritmetico -> NAME .)
+    FIM             reduce using rule 40 (FatorAritmetico -> NAME .)
+    SENAO           reduce using rule 40 (FatorAritmetico -> NAME .)
+    )               reduce using rule 40 (FatorAritmetico -> NAME .)
+    E_BOOL          reduce using rule 40 (FatorAritmetico -> NAME .)
+    OU_BOOL         reduce using rule 40 (FatorAritmetico -> NAME .)
+    ENTAO           reduce using rule 40 (FatorAritmetico -> NAME .)
+
+
+state 48
+
+    (28) ComandoRepeticao -> ENQUANTO ExpressaoRelacional . ListaComandos FIM
+    (10) ListaComandos -> . Comando ListaComandos
+    (11) ListaComandos -> .
+    (12) Comando -> . ComandoAtribuicao
+    (13) Comando -> . ComandoEntrada
+    (14) Comando -> . ComandoSaida
+    (15) Comando -> . ComandoCondicao
+    (16) Comando -> . ComandoRepeticao
+    (17) Comando -> . SubAlgoritmo
+    (18) Comando -> . ComandoComentario
+    (20) ComandoAtribuicao -> . NAME ATRIB ExpressaoAritmetica
+    (21) ComandoEntrada -> . LEIA NAME
+    (24) ComandoSaida -> . ESCREVA TipoSaida
+    (25) ComandoCondicao -> . SE ExpressaoRelacional ENTAO ListaComandos ContraCondicao FIM
+    (28) ComandoRepeticao -> . ENQUANTO ExpressaoRelacional ListaComandos FIM
+    (29) SubAlgoritmo -> . INICIO ListaComandos FIM
+    (19) ComandoComentario -> . COMMENT
+
+    FIM             reduce using rule 11 (ListaComandos -> .)
+    NAME            shift and go to state 26
+    LEIA            shift and go to state 27
+    ESCREVA         shift and go to state 28
+    SE              shift and go to state 29
+    ENQUANTO        shift and go to state 30
+    INICIO          shift and go to state 31
+    COMMENT         shift and go to state 32
+
+    ListaComandos                  shift and go to state 65
+    Comando                        shift and go to state 18
+    ComandoAtribuicao              shift and go to state 19
+    ComandoEntrada                 shift and go to state 20
+    ComandoSaida                   shift and go to state 21
+    ComandoCondicao                shift and go to state 22
+    ComandoRepeticao               shift and go to state 23
+    SubAlgoritmo                   shift and go to state 24
+    ComandoComentario              shift and go to state 25
+
+state 49
+
+    (29) SubAlgoritmo -> INICIO ListaComandos . FIM
+
+    FIM             shift and go to state 66
+
+
+state 50
+
+    (20) ComandoAtribuicao -> NAME ATRIB ExpressaoAritmetica .
+
+    NAME            reduce using rule 20 (ComandoAtribuicao -> NAME ATRIB ExpressaoAritmetica .)
+    LEIA            reduce using rule 20 (ComandoAtribuicao -> NAME ATRIB ExpressaoAritmetica .)
+    ESCREVA         reduce using rule 20 (ComandoAtribuicao -> NAME ATRIB ExpressaoAritmetica .)
+    SE              reduce using rule 20 (ComandoAtribuicao -> NAME ATRIB ExpressaoAritmetica .)
+    ENQUANTO        reduce using rule 20 (ComandoAtribuicao -> NAME ATRIB ExpressaoAritmetica .)
+    INICIO          reduce using rule 20 (ComandoAtribuicao -> NAME ATRIB ExpressaoAritmetica .)
+    COMMENT         reduce using rule 20 (ComandoAtribuicao -> NAME ATRIB ExpressaoAritmetica .)
+    $end            reduce using rule 20 (ComandoAtribuicao -> NAME ATRIB ExpressaoAritmetica .)
+    FIM             reduce using rule 20 (ComandoAtribuicao -> NAME ATRIB ExpressaoAritmetica .)
+    SENAO           reduce using rule 20 (ComandoAtribuicao -> NAME ATRIB ExpressaoAritmetica .)
+
+
+state 51
+
+    (41) FatorAritmetico -> ( . ExpressaoAritmetica )
+    (30) ExpressaoAritmetica -> . TermoAritmetico SentencaAritmetica
+    (34) TermoAritmetico -> . FatorAritmetico ProposicaoAritmetica
+    (38) FatorAritmetico -> . NUMINT
+    (39) FatorAritmetico -> . NUMREAL
+    (40) FatorAritmetico -> . NAME
+    (41) FatorAritmetico -> . ( ExpressaoAritmetica )
+
+    NUMINT          shift and go to state 45
+    NUMREAL         shift and go to state 46
+    NAME            shift and go to state 47
+    (               shift and go to state 51
+
+    ExpressaoAritmetica            shift and go to state 67
+    TermoAritmetico                shift and go to state 43
+    FatorAritmetico                shift and go to state 44
+
+state 52
+
+    (25) ComandoCondicao -> SE ExpressaoRelacional ENTAO . ListaComandos ContraCondicao FIM
+    (10) ListaComandos -> . Comando ListaComandos
+    (11) ListaComandos -> .
+    (12) Comando -> . ComandoAtribuicao
+    (13) Comando -> . ComandoEntrada
+    (14) Comando -> . ComandoSaida
+    (15) Comando -> . ComandoCondicao
+    (16) Comando -> . ComandoRepeticao
+    (17) Comando -> . SubAlgoritmo
+    (18) Comando -> . ComandoComentario
+    (20) ComandoAtribuicao -> . NAME ATRIB ExpressaoAritmetica
+    (21) ComandoEntrada -> . LEIA NAME
+    (24) ComandoSaida -> . ESCREVA TipoSaida
+    (25) ComandoCondicao -> . SE ExpressaoRelacional ENTAO ListaComandos ContraCondicao FIM
+    (28) ComandoRepeticao -> . ENQUANTO ExpressaoRelacional ListaComandos FIM
+    (29) SubAlgoritmo -> . INICIO ListaComandos FIM
+    (19) ComandoComentario -> . COMMENT
+
+    SENAO           reduce using rule 11 (ListaComandos -> .)
+    FIM             reduce using rule 11 (ListaComandos -> .)
+    NAME            shift and go to state 26
+    LEIA            shift and go to state 27
+    ESCREVA         shift and go to state 28
+    SE              shift and go to state 29
+    ENQUANTO        shift and go to state 30
+    INICIO          shift and go to state 31
+    COMMENT         shift and go to state 32
+
+    ListaComandos                  shift and go to state 68
+    Comando                        shift and go to state 18
+    ComandoAtribuicao              shift and go to state 19
+    ComandoEntrada                 shift and go to state 20
+    ComandoSaida                   shift and go to state 21
+    ComandoCondicao                shift and go to state 22
+    ComandoRepeticao               shift and go to state 23
+    SubAlgoritmo                   shift and go to state 24
+    ComandoComentario              shift and go to state 25
+
+state 53
+
+    (42) ExpressaoRelacional -> TermoRelacional SentencaRelacional .
+
+    ENTAO           reduce using rule 42 (ExpressaoRelacional -> TermoRelacional SentencaRelacional .)
+    NAME            reduce using rule 42 (ExpressaoRelacional -> TermoRelacional SentencaRelacional .)
+    LEIA            reduce using rule 42 (ExpressaoRelacional -> TermoRelacional SentencaRelacional .)
+    ESCREVA         reduce using rule 42 (ExpressaoRelacional -> TermoRelacional SentencaRelacional .)
+    SE              reduce using rule 42 (ExpressaoRelacional -> TermoRelacional SentencaRelacional .)
+    ENQUANTO        reduce using rule 42 (ExpressaoRelacional -> TermoRelacional SentencaRelacional .)
+    INICIO          reduce using rule 42 (ExpressaoRelacional -> TermoRelacional SentencaRelacional .)
+    COMMENT         reduce using rule 42 (ExpressaoRelacional -> TermoRelacional SentencaRelacional .)
+    FIM             reduce using rule 42 (ExpressaoRelacional -> TermoRelacional SentencaRelacional .)
+    )               reduce using rule 42 (ExpressaoRelacional -> TermoRelacional SentencaRelacional .)
+
+
+state 54
+
+    (45) SentencaRelacional -> E_BOOL . TermoRelacional SentencaRelacional
+    (43) TermoRelacional -> . ExpressaoAritmetica OP_REL ExpressaoAritmetica
+    (44) TermoRelacional -> . ( ExpressaoRelacional )
+    (30) ExpressaoAritmetica -> . TermoAritmetico SentencaAritmetica
+    (34) TermoAritmetico -> . FatorAritmetico ProposicaoAritmetica
+    (38) FatorAritmetico -> . NUMINT
+    (39) FatorAritmetico -> . NUMREAL
+    (40) FatorAritmetico -> . NAME
+    (41) FatorAritmetico -> . ( ExpressaoAritmetica )
+
+    (               shift and go to state 42
+    NUMINT          shift and go to state 45
+    NUMREAL         shift and go to state 46
+    NAME            shift and go to state 47
+
+    TermoRelacional                shift and go to state 69
+    ExpressaoAritmetica            shift and go to state 41
+    TermoAritmetico                shift and go to state 43
+    FatorAritmetico                shift and go to state 44
+
+state 55
+
+    (46) SentencaRelacional -> OU_BOOL . TermoRelacional SentencaRelacional
+    (43) TermoRelacional -> . ExpressaoAritmetica OP_REL ExpressaoAritmetica
+    (44) TermoRelacional -> . ( ExpressaoRelacional )
+    (30) ExpressaoAritmetica -> . TermoAritmetico SentencaAritmetica
+    (34) TermoAritmetico -> . FatorAritmetico ProposicaoAritmetica
+    (38) FatorAritmetico -> . NUMINT
+    (39) FatorAritmetico -> . NUMREAL
+    (40) FatorAritmetico -> . NAME
+    (41) FatorAritmetico -> . ( ExpressaoAritmetica )
+
+    (               shift and go to state 42
+    NUMINT          shift and go to state 45
+    NUMREAL         shift and go to state 46
+    NAME            shift and go to state 47
+
+    TermoRelacional                shift and go to state 70
+    ExpressaoAritmetica            shift and go to state 41
+    TermoAritmetico                shift and go to state 43
+    FatorAritmetico                shift and go to state 44
+
+state 56
+
+    (43) TermoRelacional -> ExpressaoAritmetica OP_REL . ExpressaoAritmetica
+    (30) ExpressaoAritmetica -> . TermoAritmetico SentencaAritmetica
+    (34) TermoAritmetico -> . FatorAritmetico ProposicaoAritmetica
+    (38) FatorAritmetico -> . NUMINT
+    (39) FatorAritmetico -> . NUMREAL
+    (40) FatorAritmetico -> . NAME
+    (41) FatorAritmetico -> . ( ExpressaoAritmetica )
+
+    NUMINT          shift and go to state 45
+    NUMREAL         shift and go to state 46
+    NAME            shift and go to state 47
+    (               shift and go to state 51
+
+    ExpressaoAritmetica            shift and go to state 71
+    TermoAritmetico                shift and go to state 43
+    FatorAritmetico                shift and go to state 44
+
+state 57
+
+    (44) TermoRelacional -> ( ExpressaoRelacional . )
+
+    )               shift and go to state 72
+
+
+state 58
+
+    (41) FatorAritmetico -> ( ExpressaoAritmetica . )
+    (43) TermoRelacional -> ExpressaoAritmetica . OP_REL ExpressaoAritmetica
+
+    )               shift and go to state 73
+    OP_REL          shift and go to state 56
+
+
+state 59
+
+    (30) ExpressaoAritmetica -> TermoAritmetico SentencaAritmetica .
+
+    OP_REL          reduce using rule 30 (ExpressaoAritmetica -> TermoAritmetico SentencaAritmetica .)
+    NAME            reduce using rule 30 (ExpressaoAritmetica -> TermoAritmetico SentencaAritmetica .)
+    LEIA            reduce using rule 30 (ExpressaoAritmetica -> TermoAritmetico SentencaAritmetica .)
+    ESCREVA         reduce using rule 30 (ExpressaoAritmetica -> TermoAritmetico SentencaAritmetica .)
+    SE              reduce using rule 30 (ExpressaoAritmetica -> TermoAritmetico SentencaAritmetica .)
+    ENQUANTO        reduce using rule 30 (ExpressaoAritmetica -> TermoAritmetico SentencaAritmetica .)
+    INICIO          reduce using rule 30 (ExpressaoAritmetica -> TermoAritmetico SentencaAritmetica .)
+    COMMENT         reduce using rule 30 (ExpressaoAritmetica -> TermoAritmetico SentencaAritmetica .)
+    $end            reduce using rule 30 (ExpressaoAritmetica -> TermoAritmetico SentencaAritmetica .)
+    FIM             reduce using rule 30 (ExpressaoAritmetica -> TermoAritmetico SentencaAritmetica .)
+    SENAO           reduce using rule 30 (ExpressaoAritmetica -> TermoAritmetico SentencaAritmetica .)
+    )               reduce using rule 30 (ExpressaoAritmetica -> TermoAritmetico SentencaAritmetica .)
+    E_BOOL          reduce using rule 30 (ExpressaoAritmetica -> TermoAritmetico SentencaAritmetica .)
+    OU_BOOL         reduce using rule 30 (ExpressaoAritmetica -> TermoAritmetico SentencaAritmetica .)
+    ENTAO           reduce using rule 30 (ExpressaoAritmetica -> TermoAritmetico SentencaAritmetica .)
+
+
+state 60
+
+    (31) SentencaAritmetica -> + . TermoAritmetico SentencaAritmetica
+    (34) TermoAritmetico -> . FatorAritmetico ProposicaoAritmetica
+    (38) FatorAritmetico -> . NUMINT
+    (39) FatorAritmetico -> . NUMREAL
+    (40) FatorAritmetico -> . NAME
+    (41) FatorAritmetico -> . ( ExpressaoAritmetica )
+
+    NUMINT          shift and go to state 45
+    NUMREAL         shift and go to state 46
+    NAME            shift and go to state 47
+    (               shift and go to state 51
+
+    TermoAritmetico                shift and go to state 74
+    FatorAritmetico                shift and go to state 44
+
+state 61
+
+    (32) SentencaAritmetica -> - . TermoAritmetico SentencaAritmetica
+    (34) TermoAritmetico -> . FatorAritmetico ProposicaoAritmetica
+    (38) FatorAritmetico -> . NUMINT
+    (39) FatorAritmetico -> . NUMREAL
+    (40) FatorAritmetico -> . NAME
+    (41) FatorAritmetico -> . ( ExpressaoAritmetica )
+
+    NUMINT          shift and go to state 45
+    NUMREAL         shift and go to state 46
+    NAME            shift and go to state 47
+    (               shift and go to state 51
+
+    TermoAritmetico                shift and go to state 75
+    FatorAritmetico                shift and go to state 44
+
+state 62
+
+    (34) TermoAritmetico -> FatorAritmetico ProposicaoAritmetica .
+
+    +               reduce using rule 34 (TermoAritmetico -> FatorAritmetico ProposicaoAritmetica .)
+    -               reduce using rule 34 (TermoAritmetico -> FatorAritmetico ProposicaoAritmetica .)
+    OP_REL          reduce using rule 34 (TermoAritmetico -> FatorAritmetico ProposicaoAritmetica .)
+    NAME            reduce using rule 34 (TermoAritmetico -> FatorAritmetico ProposicaoAritmetica .)
+    LEIA            reduce using rule 34 (TermoAritmetico -> FatorAritmetico ProposicaoAritmetica .)
+    ESCREVA         reduce using rule 34 (TermoAritmetico -> FatorAritmetico ProposicaoAritmetica .)
+    SE              reduce using rule 34 (TermoAritmetico -> FatorAritmetico ProposicaoAritmetica .)
+    ENQUANTO        reduce using rule 34 (TermoAritmetico -> FatorAritmetico ProposicaoAritmetica .)
+    INICIO          reduce using rule 34 (TermoAritmetico -> FatorAritmetico ProposicaoAritmetica .)
+    COMMENT         reduce using rule 34 (TermoAritmetico -> FatorAritmetico ProposicaoAritmetica .)
+    $end            reduce using rule 34 (TermoAritmetico -> FatorAritmetico ProposicaoAritmetica .)
+    FIM             reduce using rule 34 (TermoAritmetico -> FatorAritmetico ProposicaoAritmetica .)
+    SENAO           reduce using rule 34 (TermoAritmetico -> FatorAritmetico ProposicaoAritmetica .)
+    )               reduce using rule 34 (TermoAritmetico -> FatorAritmetico ProposicaoAritmetica .)
+    E_BOOL          reduce using rule 34 (TermoAritmetico -> FatorAritmetico ProposicaoAritmetica .)
+    OU_BOOL         reduce using rule 34 (TermoAritmetico -> FatorAritmetico ProposicaoAritmetica .)
+    ENTAO           reduce using rule 34 (TermoAritmetico -> FatorAritmetico ProposicaoAritmetica .)
+
+
+state 63
+
+    (35) ProposicaoAritmetica -> * . FatorAritmetico ProposicaoAritmetica
+    (38) FatorAritmetico -> . NUMINT
+    (39) FatorAritmetico -> . NUMREAL
+    (40) FatorAritmetico -> . NAME
+    (41) FatorAritmetico -> . ( ExpressaoAritmetica )
+
+    NUMINT          shift and go to state 45
+    NUMREAL         shift and go to state 46
+    NAME            shift and go to state 47
+    (               shift and go to state 51
+
+    FatorAritmetico                shift and go to state 76
+
+state 64
+
+    (36) ProposicaoAritmetica -> / . FatorAritmetico ProposicaoAritmetica
+    (38) FatorAritmetico -> . NUMINT
+    (39) FatorAritmetico -> . NUMREAL
+    (40) FatorAritmetico -> . NAME
+    (41) FatorAritmetico -> . ( ExpressaoAritmetica )
+
+    NUMINT          shift and go to state 45
+    NUMREAL         shift and go to state 46
+    NAME            shift and go to state 47
+    (               shift and go to state 51
+
+    FatorAritmetico                shift and go to state 77
+
+state 65
+
+    (28) ComandoRepeticao -> ENQUANTO ExpressaoRelacional ListaComandos . FIM
+
+    FIM             shift and go to state 78
+
+
+state 66
+
+    (29) SubAlgoritmo -> INICIO ListaComandos FIM .
+
+    NAME            reduce using rule 29 (SubAlgoritmo -> INICIO ListaComandos FIM .)
+    LEIA            reduce using rule 29 (SubAlgoritmo -> INICIO ListaComandos FIM .)
+    ESCREVA         reduce using rule 29 (SubAlgoritmo -> INICIO ListaComandos FIM .)
+    SE              reduce using rule 29 (SubAlgoritmo -> INICIO ListaComandos FIM .)
+    ENQUANTO        reduce using rule 29 (SubAlgoritmo -> INICIO ListaComandos FIM .)
+    INICIO          reduce using rule 29 (SubAlgoritmo -> INICIO ListaComandos FIM .)
+    COMMENT         reduce using rule 29 (SubAlgoritmo -> INICIO ListaComandos FIM .)
+    $end            reduce using rule 29 (SubAlgoritmo -> INICIO ListaComandos FIM .)
+    FIM             reduce using rule 29 (SubAlgoritmo -> INICIO ListaComandos FIM .)
+    SENAO           reduce using rule 29 (SubAlgoritmo -> INICIO ListaComandos FIM .)
+
+
+state 67
+
+    (41) FatorAritmetico -> ( ExpressaoAritmetica . )
+
+    )               shift and go to state 73
+
+
+state 68
+
+    (25) ComandoCondicao -> SE ExpressaoRelacional ENTAO ListaComandos . ContraCondicao FIM
+    (26) ContraCondicao -> . SENAO ListaComandos
+    (27) ContraCondicao -> .
+
+    SENAO           shift and go to state 80
+    FIM             reduce using rule 27 (ContraCondicao -> .)
+
+    ContraCondicao                 shift and go to state 79
+
+state 69
+
+    (45) SentencaRelacional -> E_BOOL TermoRelacional . SentencaRelacional
+    (45) SentencaRelacional -> . E_BOOL TermoRelacional SentencaRelacional
+    (46) SentencaRelacional -> . OU_BOOL TermoRelacional SentencaRelacional
+    (47) SentencaRelacional -> .
+
+    E_BOOL          shift and go to state 54
+    OU_BOOL         shift and go to state 55
+    ENTAO           reduce using rule 47 (SentencaRelacional -> .)
+    NAME            reduce using rule 47 (SentencaRelacional -> .)
+    LEIA            reduce using rule 47 (SentencaRelacional -> .)
+    ESCREVA         reduce using rule 47 (SentencaRelacional -> .)
+    SE              reduce using rule 47 (SentencaRelacional -> .)
+    ENQUANTO        reduce using rule 47 (SentencaRelacional -> .)
+    INICIO          reduce using rule 47 (SentencaRelacional -> .)
+    COMMENT         reduce using rule 47 (SentencaRelacional -> .)
+    FIM             reduce using rule 47 (SentencaRelacional -> .)
+    )               reduce using rule 47 (SentencaRelacional -> .)
+
+    SentencaRelacional             shift and go to state 81
+
+state 70
+
+    (46) SentencaRelacional -> OU_BOOL TermoRelacional . SentencaRelacional
+    (45) SentencaRelacional -> . E_BOOL TermoRelacional SentencaRelacional
+    (46) SentencaRelacional -> . OU_BOOL TermoRelacional SentencaRelacional
+    (47) SentencaRelacional -> .
+
+    E_BOOL          shift and go to state 54
+    OU_BOOL         shift and go to state 55
+    ENTAO           reduce using rule 47 (SentencaRelacional -> .)
+    NAME            reduce using rule 47 (SentencaRelacional -> .)
+    LEIA            reduce using rule 47 (SentencaRelacional -> .)
+    ESCREVA         reduce using rule 47 (SentencaRelacional -> .)
+    SE              reduce using rule 47 (SentencaRelacional -> .)
+    ENQUANTO        reduce using rule 47 (SentencaRelacional -> .)
+    INICIO          reduce using rule 47 (SentencaRelacional -> .)
+    COMMENT         reduce using rule 47 (SentencaRelacional -> .)
+    FIM             reduce using rule 47 (SentencaRelacional -> .)
+    )               reduce using rule 47 (SentencaRelacional -> .)
+
+    SentencaRelacional             shift and go to state 82
+
+state 71
+
+    (43) TermoRelacional -> ExpressaoAritmetica OP_REL ExpressaoAritmetica .
+
+    E_BOOL          reduce using rule 43 (TermoRelacional -> ExpressaoAritmetica OP_REL ExpressaoAritmetica .)
+    OU_BOOL         reduce using rule 43 (TermoRelacional -> ExpressaoAritmetica OP_REL ExpressaoAritmetica .)
+    ENTAO           reduce using rule 43 (TermoRelacional -> ExpressaoAritmetica OP_REL ExpressaoAritmetica .)
+    NAME            reduce using rule 43 (TermoRelacional -> ExpressaoAritmetica OP_REL ExpressaoAritmetica .)
+    LEIA            reduce using rule 43 (TermoRelacional -> ExpressaoAritmetica OP_REL ExpressaoAritmetica .)
+    ESCREVA         reduce using rule 43 (TermoRelacional -> ExpressaoAritmetica OP_REL ExpressaoAritmetica .)
+    SE              reduce using rule 43 (TermoRelacional -> ExpressaoAritmetica OP_REL ExpressaoAritmetica .)
+    ENQUANTO        reduce using rule 43 (TermoRelacional -> ExpressaoAritmetica OP_REL ExpressaoAritmetica .)
+    INICIO          reduce using rule 43 (TermoRelacional -> ExpressaoAritmetica OP_REL ExpressaoAritmetica .)
+    COMMENT         reduce using rule 43 (TermoRelacional -> ExpressaoAritmetica OP_REL ExpressaoAritmetica .)
+    FIM             reduce using rule 43 (TermoRelacional -> ExpressaoAritmetica OP_REL ExpressaoAritmetica .)
+    )               reduce using rule 43 (TermoRelacional -> ExpressaoAritmetica OP_REL ExpressaoAritmetica .)
+
+
+state 72
+
+    (44) TermoRelacional -> ( ExpressaoRelacional ) .
+
+    E_BOOL          reduce using rule 44 (TermoRelacional -> ( ExpressaoRelacional ) .)
+    OU_BOOL         reduce using rule 44 (TermoRelacional -> ( ExpressaoRelacional ) .)
+    ENTAO           reduce using rule 44 (TermoRelacional -> ( ExpressaoRelacional ) .)
+    NAME            reduce using rule 44 (TermoRelacional -> ( ExpressaoRelacional ) .)
+    LEIA            reduce using rule 44 (TermoRelacional -> ( ExpressaoRelacional ) .)
+    ESCREVA         reduce using rule 44 (TermoRelacional -> ( ExpressaoRelacional ) .)
+    SE              reduce using rule 44 (TermoRelacional -> ( ExpressaoRelacional ) .)
+    ENQUANTO        reduce using rule 44 (TermoRelacional -> ( ExpressaoRelacional ) .)
+    INICIO          reduce using rule 44 (TermoRelacional -> ( ExpressaoRelacional ) .)
+    COMMENT         reduce using rule 44 (TermoRelacional -> ( ExpressaoRelacional ) .)
+    FIM             reduce using rule 44 (TermoRelacional -> ( ExpressaoRelacional ) .)
+    )               reduce using rule 44 (TermoRelacional -> ( ExpressaoRelacional ) .)
+
+
+state 73
+
+    (41) FatorAritmetico -> ( ExpressaoAritmetica ) .
+
+    *               reduce using rule 41 (FatorAritmetico -> ( ExpressaoAritmetica ) .)
+    /               reduce using rule 41 (FatorAritmetico -> ( ExpressaoAritmetica ) .)
+    +               reduce using rule 41 (FatorAritmetico -> ( ExpressaoAritmetica ) .)
+    -               reduce using rule 41 (FatorAritmetico -> ( ExpressaoAritmetica ) .)
+    OP_REL          reduce using rule 41 (FatorAritmetico -> ( ExpressaoAritmetica ) .)
+    NAME            reduce using rule 41 (FatorAritmetico -> ( ExpressaoAritmetica ) .)
+    LEIA            reduce using rule 41 (FatorAritmetico -> ( ExpressaoAritmetica ) .)
+    ESCREVA         reduce using rule 41 (FatorAritmetico -> ( ExpressaoAritmetica ) .)
+    SE              reduce using rule 41 (FatorAritmetico -> ( ExpressaoAritmetica ) .)
+    ENQUANTO        reduce using rule 41 (FatorAritmetico -> ( ExpressaoAritmetica ) .)
+    INICIO          reduce using rule 41 (FatorAritmetico -> ( ExpressaoAritmetica ) .)
+    COMMENT         reduce using rule 41 (FatorAritmetico -> ( ExpressaoAritmetica ) .)
+    $end            reduce using rule 41 (FatorAritmetico -> ( ExpressaoAritmetica ) .)
+    FIM             reduce using rule 41 (FatorAritmetico -> ( ExpressaoAritmetica ) .)
+    SENAO           reduce using rule 41 (FatorAritmetico -> ( ExpressaoAritmetica ) .)
+    )               reduce using rule 41 (FatorAritmetico -> ( ExpressaoAritmetica ) .)
+    E_BOOL          reduce using rule 41 (FatorAritmetico -> ( ExpressaoAritmetica ) .)
+    OU_BOOL         reduce using rule 41 (FatorAritmetico -> ( ExpressaoAritmetica ) .)
+    ENTAO           reduce using rule 41 (FatorAritmetico -> ( ExpressaoAritmetica ) .)
+
+
+state 74
+
+    (31) SentencaAritmetica -> + TermoAritmetico . SentencaAritmetica
+    (31) SentencaAritmetica -> . + TermoAritmetico SentencaAritmetica
+    (32) SentencaAritmetica -> . - TermoAritmetico SentencaAritmetica
+    (33) SentencaAritmetica -> .
+
+    +               shift and go to state 60
+    -               shift and go to state 61
+    OP_REL          reduce using rule 33 (SentencaAritmetica -> .)
+    NAME            reduce using rule 33 (SentencaAritmetica -> .)
+    LEIA            reduce using rule 33 (SentencaAritmetica -> .)
+    ESCREVA         reduce using rule 33 (SentencaAritmetica -> .)
+    SE              reduce using rule 33 (SentencaAritmetica -> .)
+    ENQUANTO        reduce using rule 33 (SentencaAritmetica -> .)
+    INICIO          reduce using rule 33 (SentencaAritmetica -> .)
+    COMMENT         reduce using rule 33 (SentencaAritmetica -> .)
+    $end            reduce using rule 33 (SentencaAritmetica -> .)
+    FIM             reduce using rule 33 (SentencaAritmetica -> .)
+    SENAO           reduce using rule 33 (SentencaAritmetica -> .)
+    )               reduce using rule 33 (SentencaAritmetica -> .)
+    E_BOOL          reduce using rule 33 (SentencaAritmetica -> .)
+    OU_BOOL         reduce using rule 33 (SentencaAritmetica -> .)
+    ENTAO           reduce using rule 33 (SentencaAritmetica -> .)
+
+    SentencaAritmetica             shift and go to state 83
+
+state 75
+
+    (32) SentencaAritmetica -> - TermoAritmetico . SentencaAritmetica
+    (31) SentencaAritmetica -> . + TermoAritmetico SentencaAritmetica
+    (32) SentencaAritmetica -> . - TermoAritmetico SentencaAritmetica
+    (33) SentencaAritmetica -> .
+
+    +               shift and go to state 60
+    -               shift and go to state 61
+    OP_REL          reduce using rule 33 (SentencaAritmetica -> .)
+    NAME            reduce using rule 33 (SentencaAritmetica -> .)
+    LEIA            reduce using rule 33 (SentencaAritmetica -> .)
+    ESCREVA         reduce using rule 33 (SentencaAritmetica -> .)
+    SE              reduce using rule 33 (SentencaAritmetica -> .)
+    ENQUANTO        reduce using rule 33 (SentencaAritmetica -> .)
+    INICIO          reduce using rule 33 (SentencaAritmetica -> .)
+    COMMENT         reduce using rule 33 (SentencaAritmetica -> .)
+    $end            reduce using rule 33 (SentencaAritmetica -> .)
+    FIM             reduce using rule 33 (SentencaAritmetica -> .)
+    SENAO           reduce using rule 33 (SentencaAritmetica -> .)
+    )               reduce using rule 33 (SentencaAritmetica -> .)
+    E_BOOL          reduce using rule 33 (SentencaAritmetica -> .)
+    OU_BOOL         reduce using rule 33 (SentencaAritmetica -> .)
+    ENTAO           reduce using rule 33 (SentencaAritmetica -> .)
+
+    SentencaAritmetica             shift and go to state 84
+
+state 76
+
+    (35) ProposicaoAritmetica -> * FatorAritmetico . ProposicaoAritmetica
+    (35) ProposicaoAritmetica -> . * FatorAritmetico ProposicaoAritmetica
+    (36) ProposicaoAritmetica -> . / FatorAritmetico ProposicaoAritmetica
+    (37) ProposicaoAritmetica -> .
+
+    *               shift and go to state 63
+    /               shift and go to state 64
+    +               reduce using rule 37 (ProposicaoAritmetica -> .)
+    -               reduce using rule 37 (ProposicaoAritmetica -> .)
+    OP_REL          reduce using rule 37 (ProposicaoAritmetica -> .)
+    NAME            reduce using rule 37 (ProposicaoAritmetica -> .)
+    LEIA            reduce using rule 37 (ProposicaoAritmetica -> .)
+    ESCREVA         reduce using rule 37 (ProposicaoAritmetica -> .)
+    SE              reduce using rule 37 (ProposicaoAritmetica -> .)
+    ENQUANTO        reduce using rule 37 (ProposicaoAritmetica -> .)
+    INICIO          reduce using rule 37 (ProposicaoAritmetica -> .)
+    COMMENT         reduce using rule 37 (ProposicaoAritmetica -> .)
+    $end            reduce using rule 37 (ProposicaoAritmetica -> .)
+    FIM             reduce using rule 37 (ProposicaoAritmetica -> .)
+    SENAO           reduce using rule 37 (ProposicaoAritmetica -> .)
+    )               reduce using rule 37 (ProposicaoAritmetica -> .)
+    E_BOOL          reduce using rule 37 (ProposicaoAritmetica -> .)
+    OU_BOOL         reduce using rule 37 (ProposicaoAritmetica -> .)
+    ENTAO           reduce using rule 37 (ProposicaoAritmetica -> .)
+
+    ProposicaoAritmetica           shift and go to state 85
+
+state 77
+
+    (36) ProposicaoAritmetica -> / FatorAritmetico . ProposicaoAritmetica
+    (35) ProposicaoAritmetica -> . * FatorAritmetico ProposicaoAritmetica
+    (36) ProposicaoAritmetica -> . / FatorAritmetico ProposicaoAritmetica
+    (37) ProposicaoAritmetica -> .
+
+    *               shift and go to state 63
+    /               shift and go to state 64
+    +               reduce using rule 37 (ProposicaoAritmetica -> .)
+    -               reduce using rule 37 (ProposicaoAritmetica -> .)
+    OP_REL          reduce using rule 37 (ProposicaoAritmetica -> .)
+    NAME            reduce using rule 37 (ProposicaoAritmetica -> .)
+    LEIA            reduce using rule 37 (ProposicaoAritmetica -> .)
+    ESCREVA         reduce using rule 37 (ProposicaoAritmetica -> .)
+    SE              reduce using rule 37 (ProposicaoAritmetica -> .)
+    ENQUANTO        reduce using rule 37 (ProposicaoAritmetica -> .)
+    INICIO          reduce using rule 37 (ProposicaoAritmetica -> .)
+    COMMENT         reduce using rule 37 (ProposicaoAritmetica -> .)
+    $end            reduce using rule 37 (ProposicaoAritmetica -> .)
+    FIM             reduce using rule 37 (ProposicaoAritmetica -> .)
+    SENAO           reduce using rule 37 (ProposicaoAritmetica -> .)
+    )               reduce using rule 37 (ProposicaoAritmetica -> .)
+    E_BOOL          reduce using rule 37 (ProposicaoAritmetica -> .)
+    OU_BOOL         reduce using rule 37 (ProposicaoAritmetica -> .)
+    ENTAO           reduce using rule 37 (ProposicaoAritmetica -> .)
+
+    ProposicaoAritmetica           shift and go to state 86
+
+state 78
+
+    (28) ComandoRepeticao -> ENQUANTO ExpressaoRelacional ListaComandos FIM .
+
+    NAME            reduce using rule 28 (ComandoRepeticao -> ENQUANTO ExpressaoRelacional ListaComandos FIM .)
+    LEIA            reduce using rule 28 (ComandoRepeticao -> ENQUANTO ExpressaoRelacional ListaComandos FIM .)
+    ESCREVA         reduce using rule 28 (ComandoRepeticao -> ENQUANTO ExpressaoRelacional ListaComandos FIM .)
+    SE              reduce using rule 28 (ComandoRepeticao -> ENQUANTO ExpressaoRelacional ListaComandos FIM .)
+    ENQUANTO        reduce using rule 28 (ComandoRepeticao -> ENQUANTO ExpressaoRelacional ListaComandos FIM .)
+    INICIO          reduce using rule 28 (ComandoRepeticao -> ENQUANTO ExpressaoRelacional ListaComandos FIM .)
+    COMMENT         reduce using rule 28 (ComandoRepeticao -> ENQUANTO ExpressaoRelacional ListaComandos FIM .)
+    $end            reduce using rule 28 (ComandoRepeticao -> ENQUANTO ExpressaoRelacional ListaComandos FIM .)
+    FIM             reduce using rule 28 (ComandoRepeticao -> ENQUANTO ExpressaoRelacional ListaComandos FIM .)
+    SENAO           reduce using rule 28 (ComandoRepeticao -> ENQUANTO ExpressaoRelacional ListaComandos FIM .)
+
+
+state 79
+
+    (25) ComandoCondicao -> SE ExpressaoRelacional ENTAO ListaComandos ContraCondicao . FIM
+
+    FIM             shift and go to state 87
+
+
+state 80
+
+    (26) ContraCondicao -> SENAO . ListaComandos
+    (10) ListaComandos -> . Comando ListaComandos
+    (11) ListaComandos -> .
+    (12) Comando -> . ComandoAtribuicao
+    (13) Comando -> . ComandoEntrada
+    (14) Comando -> . ComandoSaida
+    (15) Comando -> . ComandoCondicao
+    (16) Comando -> . ComandoRepeticao
+    (17) Comando -> . SubAlgoritmo
+    (18) Comando -> . ComandoComentario
+    (20) ComandoAtribuicao -> . NAME ATRIB ExpressaoAritmetica
+    (21) ComandoEntrada -> . LEIA NAME
+    (24) ComandoSaida -> . ESCREVA TipoSaida
+    (25) ComandoCondicao -> . SE ExpressaoRelacional ENTAO ListaComandos ContraCondicao FIM
+    (28) ComandoRepeticao -> . ENQUANTO ExpressaoRelacional ListaComandos FIM
+    (29) SubAlgoritmo -> . INICIO ListaComandos FIM
+    (19) ComandoComentario -> . COMMENT
+
+    FIM             reduce using rule 11 (ListaComandos -> .)
+    NAME            shift and go to state 26
+    LEIA            shift and go to state 27
+    ESCREVA         shift and go to state 28
+    SE              shift and go to state 29
+    ENQUANTO        shift and go to state 30
+    INICIO          shift and go to state 31
+    COMMENT         shift and go to state 32
+
+    ListaComandos                  shift and go to state 88
+    Comando                        shift and go to state 18
+    ComandoAtribuicao              shift and go to state 19
+    ComandoEntrada                 shift and go to state 20
+    ComandoSaida                   shift and go to state 21
+    ComandoCondicao                shift and go to state 22
+    ComandoRepeticao               shift and go to state 23
+    SubAlgoritmo                   shift and go to state 24
+    ComandoComentario              shift and go to state 25
+
+state 81
+
+    (45) SentencaRelacional -> E_BOOL TermoRelacional SentencaRelacional .
+
+    ENTAO           reduce using rule 45 (SentencaRelacional -> E_BOOL TermoRelacional SentencaRelacional .)
+    NAME            reduce using rule 45 (SentencaRelacional -> E_BOOL TermoRelacional SentencaRelacional .)
+    LEIA            reduce using rule 45 (SentencaRelacional -> E_BOOL TermoRelacional SentencaRelacional .)
+    ESCREVA         reduce using rule 45 (SentencaRelacional -> E_BOOL TermoRelacional SentencaRelacional .)
+    SE              reduce using rule 45 (SentencaRelacional -> E_BOOL TermoRelacional SentencaRelacional .)
+    ENQUANTO        reduce using rule 45 (SentencaRelacional -> E_BOOL TermoRelacional SentencaRelacional .)
+    INICIO          reduce using rule 45 (SentencaRelacional -> E_BOOL TermoRelacional SentencaRelacional .)
+    COMMENT         reduce using rule 45 (SentencaRelacional -> E_BOOL TermoRelacional SentencaRelacional .)
+    FIM             reduce using rule 45 (SentencaRelacional -> E_BOOL TermoRelacional SentencaRelacional .)
+    )               reduce using rule 45 (SentencaRelacional -> E_BOOL TermoRelacional SentencaRelacional .)
+
+
+state 82
+
+    (46) SentencaRelacional -> OU_BOOL TermoRelacional SentencaRelacional .
+
+    ENTAO           reduce using rule 46 (SentencaRelacional -> OU_BOOL TermoRelacional SentencaRelacional .)
+    NAME            reduce using rule 46 (SentencaRelacional -> OU_BOOL TermoRelacional SentencaRelacional .)
+    LEIA            reduce using rule 46 (SentencaRelacional -> OU_BOOL TermoRelacional SentencaRelacional .)
+    ESCREVA         reduce using rule 46 (SentencaRelacional -> OU_BOOL TermoRelacional SentencaRelacional .)
+    SE              reduce using rule 46 (SentencaRelacional -> OU_BOOL TermoRelacional SentencaRelacional .)
+    ENQUANTO        reduce using rule 46 (SentencaRelacional -> OU_BOOL TermoRelacional SentencaRelacional .)
+    INICIO          reduce using rule 46 (SentencaRelacional -> OU_BOOL TermoRelacional SentencaRelacional .)
+    COMMENT         reduce using rule 46 (SentencaRelacional -> OU_BOOL TermoRelacional SentencaRelacional .)
+    FIM             reduce using rule 46 (SentencaRelacional -> OU_BOOL TermoRelacional SentencaRelacional .)
+    )               reduce using rule 46 (SentencaRelacional -> OU_BOOL TermoRelacional SentencaRelacional .)
+
+
+state 83
+
+    (31) SentencaAritmetica -> + TermoAritmetico SentencaAritmetica .
+
+    OP_REL          reduce using rule 31 (SentencaAritmetica -> + TermoAritmetico SentencaAritmetica .)
+    NAME            reduce using rule 31 (SentencaAritmetica -> + TermoAritmetico SentencaAritmetica .)
+    LEIA            reduce using rule 31 (SentencaAritmetica -> + TermoAritmetico SentencaAritmetica .)
+    ESCREVA         reduce using rule 31 (SentencaAritmetica -> + TermoAritmetico SentencaAritmetica .)
+    SE              reduce using rule 31 (SentencaAritmetica -> + TermoAritmetico SentencaAritmetica .)
+    ENQUANTO        reduce using rule 31 (SentencaAritmetica -> + TermoAritmetico SentencaAritmetica .)
+    INICIO          reduce using rule 31 (SentencaAritmetica -> + TermoAritmetico SentencaAritmetica .)
+    COMMENT         reduce using rule 31 (SentencaAritmetica -> + TermoAritmetico SentencaAritmetica .)
+    $end            reduce using rule 31 (SentencaAritmetica -> + TermoAritmetico SentencaAritmetica .)
+    FIM             reduce using rule 31 (SentencaAritmetica -> + TermoAritmetico SentencaAritmetica .)
+    SENAO           reduce using rule 31 (SentencaAritmetica -> + TermoAritmetico SentencaAritmetica .)
+    )               reduce using rule 31 (SentencaAritmetica -> + TermoAritmetico SentencaAritmetica .)
+    E_BOOL          reduce using rule 31 (SentencaAritmetica -> + TermoAritmetico SentencaAritmetica .)
+    OU_BOOL         reduce using rule 31 (SentencaAritmetica -> + TermoAritmetico SentencaAritmetica .)
+    ENTAO           reduce using rule 31 (SentencaAritmetica -> + TermoAritmetico SentencaAritmetica .)
+
+
+state 84
+
+    (32) SentencaAritmetica -> - TermoAritmetico SentencaAritmetica .
+
+    OP_REL          reduce using rule 32 (SentencaAritmetica -> - TermoAritmetico SentencaAritmetica .)
+    NAME            reduce using rule 32 (SentencaAritmetica -> - TermoAritmetico SentencaAritmetica .)
+    LEIA            reduce using rule 32 (SentencaAritmetica -> - TermoAritmetico SentencaAritmetica .)
+    ESCREVA         reduce using rule 32 (SentencaAritmetica -> - TermoAritmetico SentencaAritmetica .)
+    SE              reduce using rule 32 (SentencaAritmetica -> - TermoAritmetico SentencaAritmetica .)
+    ENQUANTO        reduce using rule 32 (SentencaAritmetica -> - TermoAritmetico SentencaAritmetica .)
+    INICIO          reduce using rule 32 (SentencaAritmetica -> - TermoAritmetico SentencaAritmetica .)
+    COMMENT         reduce using rule 32 (SentencaAritmetica -> - TermoAritmetico SentencaAritmetica .)
+    $end            reduce using rule 32 (SentencaAritmetica -> - TermoAritmetico SentencaAritmetica .)
+    FIM             reduce using rule 32 (SentencaAritmetica -> - TermoAritmetico SentencaAritmetica .)
+    SENAO           reduce using rule 32 (SentencaAritmetica -> - TermoAritmetico SentencaAritmetica .)
+    )               reduce using rule 32 (SentencaAritmetica -> - TermoAritmetico SentencaAritmetica .)
+    E_BOOL          reduce using rule 32 (SentencaAritmetica -> - TermoAritmetico SentencaAritmetica .)
+    OU_BOOL         reduce using rule 32 (SentencaAritmetica -> - TermoAritmetico SentencaAritmetica .)
+    ENTAO           reduce using rule 32 (SentencaAritmetica -> - TermoAritmetico SentencaAritmetica .)
+
+
+state 85
+
+    (35) ProposicaoAritmetica -> * FatorAritmetico ProposicaoAritmetica .
+
+    +               reduce using rule 35 (ProposicaoAritmetica -> * FatorAritmetico ProposicaoAritmetica .)
+    -               reduce using rule 35 (ProposicaoAritmetica -> * FatorAritmetico ProposicaoAritmetica .)
+    OP_REL          reduce using rule 35 (ProposicaoAritmetica -> * FatorAritmetico ProposicaoAritmetica .)
+    NAME            reduce using rule 35 (ProposicaoAritmetica -> * FatorAritmetico ProposicaoAritmetica .)
+    LEIA            reduce using rule 35 (ProposicaoAritmetica -> * FatorAritmetico ProposicaoAritmetica .)
+    ESCREVA         reduce using rule 35 (ProposicaoAritmetica -> * FatorAritmetico ProposicaoAritmetica .)
+    SE              reduce using rule 35 (ProposicaoAritmetica -> * FatorAritmetico ProposicaoAritmetica .)
+    ENQUANTO        reduce using rule 35 (ProposicaoAritmetica -> * FatorAritmetico ProposicaoAritmetica .)
+    INICIO          reduce using rule 35 (ProposicaoAritmetica -> * FatorAritmetico ProposicaoAritmetica .)
+    COMMENT         reduce using rule 35 (ProposicaoAritmetica -> * FatorAritmetico ProposicaoAritmetica .)
+    $end            reduce using rule 35 (ProposicaoAritmetica -> * FatorAritmetico ProposicaoAritmetica .)
+    FIM             reduce using rule 35 (ProposicaoAritmetica -> * FatorAritmetico ProposicaoAritmetica .)
+    SENAO           reduce using rule 35 (ProposicaoAritmetica -> * FatorAritmetico ProposicaoAritmetica .)
+    )               reduce using rule 35 (ProposicaoAritmetica -> * FatorAritmetico ProposicaoAritmetica .)
+    E_BOOL          reduce using rule 35 (ProposicaoAritmetica -> * FatorAritmetico ProposicaoAritmetica .)
+    OU_BOOL         reduce using rule 35 (ProposicaoAritmetica -> * FatorAritmetico ProposicaoAritmetica .)
+    ENTAO           reduce using rule 35 (ProposicaoAritmetica -> * FatorAritmetico ProposicaoAritmetica .)
+
+
+state 86
+
+    (36) ProposicaoAritmetica -> / FatorAritmetico ProposicaoAritmetica .
+
+    +               reduce using rule 36 (ProposicaoAritmetica -> / FatorAritmetico ProposicaoAritmetica .)
+    -               reduce using rule 36 (ProposicaoAritmetica -> / FatorAritmetico ProposicaoAritmetica .)
+    OP_REL          reduce using rule 36 (ProposicaoAritmetica -> / FatorAritmetico ProposicaoAritmetica .)
+    NAME            reduce using rule 36 (ProposicaoAritmetica -> / FatorAritmetico ProposicaoAritmetica .)
+    LEIA            reduce using rule 36 (ProposicaoAritmetica -> / FatorAritmetico ProposicaoAritmetica .)
+    ESCREVA         reduce using rule 36 (ProposicaoAritmetica -> / FatorAritmetico ProposicaoAritmetica .)
+    SE              reduce using rule 36 (ProposicaoAritmetica -> / FatorAritmetico ProposicaoAritmetica .)
+    ENQUANTO        reduce using rule 36 (ProposicaoAritmetica -> / FatorAritmetico ProposicaoAritmetica .)
+    INICIO          reduce using rule 36 (ProposicaoAritmetica -> / FatorAritmetico ProposicaoAritmetica .)
+    COMMENT         reduce using rule 36 (ProposicaoAritmetica -> / FatorAritmetico ProposicaoAritmetica .)
+    $end            reduce using rule 36 (ProposicaoAritmetica -> / FatorAritmetico ProposicaoAritmetica .)
+    FIM             reduce using rule 36 (ProposicaoAritmetica -> / FatorAritmetico ProposicaoAritmetica .)
+    SENAO           reduce using rule 36 (ProposicaoAritmetica -> / FatorAritmetico ProposicaoAritmetica .)
+    )               reduce using rule 36 (ProposicaoAritmetica -> / FatorAritmetico ProposicaoAritmetica .)
+    E_BOOL          reduce using rule 36 (ProposicaoAritmetica -> / FatorAritmetico ProposicaoAritmetica .)
+    OU_BOOL         reduce using rule 36 (ProposicaoAritmetica -> / FatorAritmetico ProposicaoAritmetica .)
+    ENTAO           reduce using rule 36 (ProposicaoAritmetica -> / FatorAritmetico ProposicaoAritmetica .)
+
+
+state 87
+
+    (25) ComandoCondicao -> SE ExpressaoRelacional ENTAO ListaComandos ContraCondicao FIM .
+
+    NAME            reduce using rule 25 (ComandoCondicao -> SE ExpressaoRelacional ENTAO ListaComandos ContraCondicao FIM .)
+    LEIA            reduce using rule 25 (ComandoCondicao -> SE ExpressaoRelacional ENTAO ListaComandos ContraCondicao FIM .)
+    ESCREVA         reduce using rule 25 (ComandoCondicao -> SE ExpressaoRelacional ENTAO ListaComandos ContraCondicao FIM .)
+    SE              reduce using rule 25 (ComandoCondicao -> SE ExpressaoRelacional ENTAO ListaComandos ContraCondicao FIM .)
+    ENQUANTO        reduce using rule 25 (ComandoCondicao -> SE ExpressaoRelacional ENTAO ListaComandos ContraCondicao FIM .)
+    INICIO          reduce using rule 25 (ComandoCondicao -> SE ExpressaoRelacional ENTAO ListaComandos ContraCondicao FIM .)
+    COMMENT         reduce using rule 25 (ComandoCondicao -> SE ExpressaoRelacional ENTAO ListaComandos ContraCondicao FIM .)
+    $end            reduce using rule 25 (ComandoCondicao -> SE ExpressaoRelacional ENTAO ListaComandos ContraCondicao FIM .)
+    FIM             reduce using rule 25 (ComandoCondicao -> SE ExpressaoRelacional ENTAO ListaComandos ContraCondicao FIM .)
+    SENAO           reduce using rule 25 (ComandoCondicao -> SE ExpressaoRelacional ENTAO ListaComandos ContraCondicao FIM .)
+
+
+state 88
+
+    (26) ContraCondicao -> SENAO ListaComandos .
+
+    FIM             reduce using rule 26 (ContraCondicao -> SENAO ListaComandos .)
+
