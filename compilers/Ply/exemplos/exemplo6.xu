@@ -1,0 +1,19 @@
+: DECLARACOES
+nome : TEXTO
+nome2 : TEXTO
+idade : INTEIRO
+: PROGRAMA
+# teste de comentário
+LEIA idade
+SE idade >= 18 ENTAO
+    ESCREVA "Maior de idade"
+    ESCREVA "Maior de idade"
+SENAO
+    SE idade == 12 ENTAO
+       ESCREVA "doze doze"
+    FIM
+    ESCREVA "Menor de idade"
+FIM
+LEIA nome
+ESCREVA nome2
+ESCREVA "Oi"
